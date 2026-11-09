@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Criatura" load_steps=2 format=3 uid="uid://b5a0v16tuk18g"]
+
+[ext_resource type="Script" uid="uid://mqaol8acbgro" path="res://Recursos/Recursos_Criatura.gd" id="1_lhqdx"]
+
+[resource]
+script = ExtResource("1_lhqdx")
+numero = 1
+nombre = "Latígia"
+tipo = "Planta_Insecto"
+dificultad = 1
+ca = 13
+pg = 24
+velocidad = "9 m"
+fuerza = 3
+destreza = 15
+constitucion = 13
+inteligencia = 8
+sabiduria = 16
+carisma = 10
+metadata/_custom_type_script = "uid://mqaol8acbgro"

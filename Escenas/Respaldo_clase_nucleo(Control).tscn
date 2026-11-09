@@ -1,0 +1,168 @@
+[gd_scene format=3 uid="uid://de657vr8p2aoh"]
+
+[node name="Clase_Nucleo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margenes_Principales" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="Estructura_Principal" type="VBoxContainer" parent="Margenes_Principales"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Título" type="Label" parent="Margenes_Principales/Estructura_Principal"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Clase Núcleo
+"
+horizontal_alignment = 1
+
+[node name="Pantallas" type="TabContainer" parent="Margenes_Principales/Estructura_Principal"]
+custom_minimum_size = Vector2(700, 500)
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 1
+
+[node name="Personaje" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+metadata/_tab_index = 0
+
+[node name="Texto_Personaje" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje"]
+layout_mode = 2
+text = "Pantalla De Personaje"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Objetos" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+metadata/_tab_index = 1
+
+[node name="Contenido_Objetos" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Titulo_Objetos" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Gestión de objetos"
+horizontal_alignment = 1
+
+[node name="Formulario_Objeto" type="GridContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos"]
+layout_mode = 2
+columns = 2
+
+[node name="Etiqueta_Nombre" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Formulario_Objeto"]
+layout_mode = 2
+text = "Nombre:"
+
+[node name="Entrada_Nombre" type="LineEdit" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Formulario_Objeto"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Nombre del Objeto"
+
+[node name="Etiqueta_Cantidad" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Formulario_Objeto"]
+layout_mode = 2
+text = "Cantidad:"
+
+[node name="Entrada_Cantidad" type="SpinBox" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Formulario_Objeto"]
+layout_mode = 2
+min_value = 1.0
+max_value = 999.0
+value = 1.0
+allow_greater = true
+
+[node name="Etiqueta_Descripcion" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Formulario_Objeto"]
+layout_mode = 2
+text = "Descripcion:"
+
+[node name="Entrada_Descripcion" type="LineEdit" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Formulario_Objeto"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Descripción Breve"
+
+[node name="Boton_Guardar_Objetos" type="Button" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos"]
+layout_mode = 2
+text = "Guardar Objeto"
+
+[node name="Separador_Objeto" type="HSeparator" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos"]
+layout_mode = 2
+
+[node name="Titulo_Lista_Objetos" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos"]
+layout_mode = 2
+text = "Objetos Guardados"
+horizontal_alignment = 1
+
+[node name="Buscador_Objetos" type="HBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Etiqueta_Buscar" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Buscador_Objetos"]
+layout_mode = 2
+text = "Buscar:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Entrada_Buscador" type="LineEdit" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Buscador_Objetos"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Nombre o descripción del objeto"
+clear_button_enabled = true
+
+[node name="Lista_Objetos" type="ItemList" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Acciones_Objeto" type="HBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Boton_Editar_Objeto" type="Button" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Acciones_Objeto"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Editar"
+
+[node name="Boton_Eliminar_Objeto" type="Button" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Acciones_Objeto"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Eliminar
+"
+
+[node name="Transformaciones" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+metadata/_tab_index = 2
+
+[node name="Texto_Transformaciones" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones"]
+layout_mode = 2
+text = "Pantalla de Trasnsformaciones"
+horizontal_alignment = 1
+vertical_alignment = 1
