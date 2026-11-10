@@ -1075,6 +1075,8 @@ func cargar_criaturas() -> void:
 
 				var criatura := recurso as Criatura
 				criatura.normalizar()
+				for problema in criatura.problemas_fases():
+					push_warning("Criatura %d: %s" % [criatura.numero, problema])
 				criaturas.append(criatura)
 
 		archivo = carpeta.get_next()
@@ -1153,24 +1155,20 @@ func rellenar_estadisticas(criatura: Criatura) -> void:
 			criatura.nombre_dificultad(),
 		]
 	)
-	poner_texto_estadistica("CA_Criatura", str(criatura.ca))
-	poner_texto_estadistica("PG_Criatura", str(criatura.pg))
-	poner_texto_estadistica("Velocidad_Criatura", criatura.velocidad)
-	poner_texto_estadistica("Fuerza_Criatura", str(criatura.fuerza))
-	poner_texto_estadistica("Destreza_Criatura", str(criatura.destreza))
-	poner_texto_estadistica(
-		"Constitucion_Criatura",
-		str(criatura.constitucion)
-	)
-	poner_texto_estadistica(
-		"Inteligencia_Criatura",
-		str(criatura.inteligencia)
-	)
-	poner_texto_estadistica(
-		"Sabiduria_Criatura",
-		str(criatura.sabiduria)
-	)
-	poner_texto_estadistica("Carisma_Criatura", str(criatura.carisma))
+	var fase := criatura.obtener_fase(1)
+
+	if fase == null:
+		return
+
+	poner_texto_estadistica("CA_Criatura", str(fase.ca))
+	poner_texto_estadistica("PG_Criatura", str(fase.pg))
+	poner_texto_estadistica("Velocidad_Criatura", fase.velocidad)
+	poner_texto_estadistica("Fuerza_Criatura", str(fase.fuerza))
+	poner_texto_estadistica("Destreza_Criatura", str(fase.destreza))
+	poner_texto_estadistica("Constitucion_Criatura", str(fase.constitucion))
+	poner_texto_estadistica("Inteligencia_Criatura", str(fase.inteligencia))
+	poner_texto_estadistica("Sabiduria_Criatura", str(fase.sabiduria))
+	poner_texto_estadistica("Carisma_Criatura", str(fase.carisma))
 
 
 func poner_texto_estadistica(nombre: String, texto: String) -> void:

@@ -10,13 +10,12 @@ extends Resource
 const NUMERO_MINIMO: int = 1
 const NUMERO_MAXIMO: int = 100
 
-## Rango permitido para los seis atributos de D&D 5e.
-const ATRIBUTO_MINIMO: int = 1
-const ATRIBUTO_MAXIMO: int = 30
-
 ## Escala de dificultad de uso de la forma (homebrew, no D&D).
 const DIFICULTAD_MINIMA: int = 1
 const DIFICULTAD_MAXIMA: int = 5
+
+## Cada criatura tiene exactamente 4 fases de evolución.
+const NUMERO_FASES: int = 4
 
 ## Nombres de la escala de dificultad. El índice 0 es dificultad 1.
 const NOMBRES_DIFICULTAD: Array[String] = [
@@ -57,29 +56,14 @@ const TIPOS: Array[String] = [
 ## Dificultad de uso de la forma, de 1 (muy fácil) a 5 (muy difícil).
 @export_range(1, 5, 1) var dificultad: int = 1
 
-## Clase de armadura.
-@export_range(0, 99, 1) var ca: int = 10
-
-## Puntos de golpe.
-@export_range(1, 9999, 1) var pg: int = 1
-
-## Velocidad como texto: "9 m", "vuelo 18 m"…
-@export var velocidad: String = "9 m"
-
 ## Sprite o pixelart de la forma. Puede quedarse vacío.
 @export var imagen: Texture2D
-
-## Los seis atributos de D&D 5e.
-@export_range(1, 30, 1) var fuerza: int = 10
-@export_range(1, 30, 1) var destreza: int = 10
-@export_range(1, 30, 1) var constitucion: int = 10
-@export_range(1, 30, 1) var inteligencia: int = 10
-@export_range(1, 30, 1) var sabiduria: int = 10
-@export_range(1, 30, 1) var carisma: int = 10
 
 ## Habilidades propias de esta forma. Cada criatura tiene las suyas.
 @export var habilidades: Array[Habilidad] = []
 
+## Las 4 fases de evolución, en orden: fase 1, 2, 3 y 4.
+@export var fases: Array[Fase] = []
 
 ## Ajusta los valores a los rangos permitidos y limpia los textos.
 func normalizar() -> void:
@@ -87,7 +71,6 @@ func normalizar() -> void:
 	numero = clampi(numero, NUMERO_MINIMO, NUMERO_MAXIMO)
 	nombre = nombre.strip_edges()
 	tipo = tipo.strip_edges()
-	velocidad = velocidad.strip_edges()
 
 	if tipo.is_empty():
 		tipo = "Bestia"
@@ -98,28 +81,13 @@ func normalizar() -> void:
 		DIFICULTAD_MAXIMA
 	)
 
-	ca = clampi(ca, 0, 99)
-	pg = clampi(pg, 1, 9999)
-
-	fuerza = clampi(fuerza, ATRIBUTO_MINIMO, ATRIBUTO_MAXIMO)
-	destreza = clampi(destreza, ATRIBUTO_MINIMO, ATRIBUTO_MAXIMO)
-	constitucion = clampi(
-		constitucion,
-		ATRIBUTO_MINIMO,
-		ATRIBUTO_MAXIMO
-	)
-	inteligencia = clampi(
-		inteligencia,
-		ATRIBUTO_MINIMO,
-		ATRIBUTO_MAXIMO
-	)
-	sabiduria = clampi(sabiduria, ATRIBUTO_MINIMO, ATRIBUTO_MAXIMO)
-	carisma = clampi(carisma, ATRIBUTO_MINIMO, ATRIBUTO_MAXIMO)
-
 	for habilidad in habilidades:
 		if habilidad != null:
 			habilidad.normalizar()
-
+	
+	for fase in fases:
+		if fase != null:
+			fase.normalizar()
 
 ## True si tiene un número dentro de rango y un nombre utilizable.
 func es_valida() -> bool:
@@ -158,3 +126,44 @@ func texto_resumen() -> String:
 		DIFICULTAD_MAXIMA,
 		nombre_dificultad(),
 	]
+
+
+
+## Devuelve la fase con ese número (1–4), o null si no existe.
+func obtener_fase(numero_fase: int) -> Fase:
+
+	for fase in fases:
+		if fase != null and fase.numero == numero_fase:
+			return fase
+
+	return null
+
+
+## Revisa las fases y devuelve una lista de problemas.
+## Si la lista está vacía, las fases están bien.
+func problemas_fases() -> Array[String]:
+
+	var problemas: Array[String] = []
+
+	if fases.size() != NUMERO_FASES:
+		problemas.append("tiene %d fases en vez de %d" % [fases.size(), NUMERO_FASES])
+
+	var nivel_anterior := 0
+
+	for i in fases.size():
+
+		var fase := fases[i]
+
+		if fase == null:
+			problemas.append("la posición %d está vacía" % i)
+			continue
+
+		if fase.numero != i + 1:
+			problemas.append("la posición %d tiene la fase %d, debería ser la %d" % [i, fase.numero, i + 1])
+
+		if fase.nivel_requerido < nivel_anterior:
+			problemas.append("la fase %d pide nivel %d, menos que la fase anterior" % [fase.numero, fase.nivel_requerido])
+
+		nivel_anterior = fase.nivel_requerido
+
+	return problemas

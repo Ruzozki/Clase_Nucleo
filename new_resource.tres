@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Fase" load_steps=2 format=3 uid="uid://dw57qww7ba63h"]
+
+[ext_resource type="Script" uid="uid://bhrvt1cxultx6" path="res://Recursos/Recursos_Fase.gd" id="1_g5ko2"]
+
+[resource]
+script = ExtResource("1_g5ko2")
+numero = 1
+nombre = ""
+nivel_requerido = 1
+coste_pt = 0
+ca = 10
+pg = 1
+velocidad = "9 m"
+fuerza = 10
+destreza = 10
+constitucion = 10
+inteligencia = 10
+sabiduria = 10
+carisma = 10
+metadata/_custom_type_script = "uid://bhrvt1cxultx6"
