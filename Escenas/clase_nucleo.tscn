@@ -3,16 +3,10 @@
 [ext_resource type="Script" uid="uid://bn2abao1a8w6g" path="res://Escenas/clase_nucleo.gd" id="1_8wanl"]
 
 [sub_resource type="Theme" id="Theme_8wanl"]
+default_font_size = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fondo_barra"]
 bg_color = Color(0.08, 0.09, 0.12, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_barra_transformacion"]
-bg_color = Color(0.85, 0.66, 0.26, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
@@ -25,6 +19,13 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_barra_transformacion"]
+bg_color = Color(0.85, 0.66, 0.26, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [node name="Clase_Nucleo" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -32,6 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_8wanl")
 script = ExtResource("1_8wanl")
 ruta_ventana_objeto = NodePath("Ventana_Objeto")
 ruta_boton_nuevo_objeto = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Cabecera_Objetos/Boton_Nuevo_Objeto")
@@ -53,16 +55,25 @@ ruta_filtro_categoria = NodePath("Margenes_Principales/Estructura_Principal/Pant
 ruta_boton_editar_objeto = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Acciones_Objeto/Boton_Editar_Objeto")
 ruta_boton_eliminar_objeto = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Acciones_Objeto/Boton_Eliminar_Objeto")
 ruta_tabla_monedas = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Monedas/Contenido_Monedas/Tabla_Monedas")
-ruta_resultado_d100 = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_D100/Margen_D100/Contenido_D100/Resultado_D100")
-ruta_boton_tirar_d100 = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_D100/Margen_D100/Contenido_D100/Boton_Tirar_D100")
-ruta_mensaje_duplicada = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_D100/Margen_D100/Contenido_D100/Mensaje_Duplicada")
-ruta_etiqueta_criatura = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Imagen/Margen_Imagen/Contenido_Imagen/Etiqueta_Criatura")
-ruta_boton_estadisticas = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Imagen/Margen_Imagen/Contenido_Imagen/Boton_Estadisticas")
-ruta_ventana_estadisticas = NodePath("Ventana_Estadisticas")
-ruta_imagen_criatura = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Imagen/Margen_Imagen/Contenido_Imagen/Imagen_Criatura")
-ruta_titulo_estadisticas = NodePath("Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Titulo_Estadisticas")
-ruta_grid_estadisticas = NodePath("Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas")
-ruta_lista_habilidades = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades/Lista_Habilidades")
+ruta_pantallas = NodePath("Margenes_Principales/Estructura_Principal/Pantallas")
+ruta_resultado_d100 = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_D100/Margen_D100/Contenido_D100/Resultado_D100")
+ruta_boton_tirar_d100 = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_D100/Margen_D100/Contenido_D100/Boton_Tirar_D100")
+ruta_mensaje_duplicada = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_D100/Margen_D100/Contenido_D100/Mensaje_Duplicada")
+ruta_etiqueta_criatura = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen/Margen_Imagen/Imagen_Criatura/Texto_Imagen/Nombre_Transformacion")
+ruta_subtitulo_criatura = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen/Margen_Imagen/Imagen_Criatura/Texto_Imagen/Subtitulo_Transformacion")
+ruta_fase_criatura = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen/Margen_Imagen/Imagen_Criatura/Texto_Imagen/Fase_Transformacion")
+ruta_imagen_criatura = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen/Margen_Imagen/Imagen_Criatura")
+ruta_lista_habilidades = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades/Lista_Habilidades")
+ruta_boton_base_datos = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro/Boton_Base_Datos")
+ruta_boton_inventario = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Boton_Inventario")
+ruta_grid_atributos = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos")
+ruta_valor_ca = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_CA/Margen_CA/Contenido_CA/Datos_CA/Valor_CA")
+ruta_valor_pg = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_PG/Margen_PG/Contenido_PG/Datos_PG/Valor_PG")
+ruta_valor_vel = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos/Valor_VEL")
+ruta_barra_pm = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_PM/Margen_PM/Contenido_PM/Barra_PM")
+ruta_valor_pt = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_PT/Margen_PT/Contenido_PT/Valor_PT")
+ruta_barra_pt = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_PT/Margen_PT/Contenido_PT/Barra_PT")
+ruta_lista_pericias = NodePath("Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro/Panel_Pericias/Margen_Pericias/Contenido_Pericias/Scroll_Pericias/Lista_Pericias")
 
 [node name="Margenes_Principales" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -71,51 +82,550 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 
 [node name="Estructura_Principal" type="VBoxContainer" parent="Margenes_Principales"]
 layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="Título" type="Label" parent="Margenes_Principales/Estructura_Principal"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "Clase Núcleo
-"
-horizontal_alignment = 1
+theme_override_constants/separation = 0
 
 [node name="Pantallas" type="TabContainer" parent="Margenes_Principales/Estructura_Principal"]
 custom_minimum_size = Vector2(700, 500)
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 3
+current_tab = 0
 
 [node name="Personaje" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas"]
-visible = false
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 metadata/_tab_index = 0
 
-[node name="Texto_Personaje" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje"]
+[node name="Contenido_Personaje" type="HBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje"]
 layout_mode = 2
-text = "Pantalla De Personaje"
+theme_override_constants/separation = 0
+
+[node name="Columna_Info" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Panel_Atributos" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="Margen_Atributos" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Contenido_Atributos" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Grid_Atributos" type="GridContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="Icono_FUE" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Etiqueta_FUE" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 15
+text = "FUE"
+
+[node name="Valor_FUE" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "—"
+horizontal_alignment = 2
+
+[node name="Icono_DES" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Etiqueta_DES" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 15
+text = "DES"
+
+[node name="Valor_DES" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "—"
+horizontal_alignment = 2
+
+[node name="Icono_CON" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Etiqueta_CON" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 15
+text = "CON"
+
+[node name="Valor_CON" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "—"
+horizontal_alignment = 2
+
+[node name="Icono_INT" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Etiqueta_INT" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 15
+text = "INT"
+
+[node name="Valor_INT" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "—"
+horizontal_alignment = 2
+
+[node name="Icono_SAB" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Etiqueta_SAB" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 15
+text = "SAB"
+
+[node name="Valor_SAB" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "—"
+horizontal_alignment = 2
+
+[node name="Icono_CAR" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Etiqueta_CAR" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 15
+text = "CAR"
+
+[node name="Valor_CAR" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "—"
+horizontal_alignment = 2
+
+[node name="Icono_VEL" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Etiqueta_VEL" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 15
+text = "VEL"
+
+[node name="Valor_VEL" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_Atributos/Margen_Atributos/Contenido_Atributos/Grid_Atributos"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "—"
+horizontal_alignment = 2
+
+[node name="Fila_Combate" type="HBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Panel_CA" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margen_CA" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_CA"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Contenido_CA" type="HBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_CA/Margen_CA"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Icono_CA" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_CA/Margen_CA/Contenido_CA"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Datos_CA" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_CA/Margen_CA/Contenido_CA"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Etiqueta_CA" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_CA/Margen_CA/Contenido_CA/Datos_CA"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 13
+text = "CA"
+horizontal_alignment = 1
+
+[node name="Valor_CA" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_CA/Margen_CA/Contenido_CA/Datos_CA"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "—"
+horizontal_alignment = 1
+
+[node name="Panel_PG" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margen_PG" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_PG"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Contenido_PG" type="HBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_PG/Margen_PG"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Icono_PG" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_PG/Margen_PG/Contenido_PG"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Datos_PG" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_PG/Margen_PG/Contenido_PG"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Etiqueta_PG" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_PG/Margen_PG/Contenido_PG/Datos_PG"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 13
+text = "PG"
+horizontal_alignment = 1
+
+[node name="Valor_PG" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Fila_Combate/Panel_PG/Margen_PG/Contenido_PG/Datos_PG"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "—"
+horizontal_alignment = 1
+
+[node name="Panel_PM" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info"]
+layout_mode = 2
+
+[node name="Margen_PM" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_PM"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Contenido_PM" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_PM/Margen_PM"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Titulo_PM" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_PM/Margen_PM/Contenido_PM"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.62, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "PM"
+
+[node name="Barra_PM" type="ProgressBar" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_PM/Margen_PM/Contenido_PM"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_fondo_barra")
+theme_override_styles/fill = SubResource("StyleBoxFlat_barra_mutacion")
+show_percentage = false
+
+[node name="Espacio_Info" type="Control" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Columna_Centro" type="HBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Panel_Imagen" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margen_Imagen" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Imagen_Criatura" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen/Margen_Imagen"]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texto_Imagen" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen/Margen_Imagen/Imagen_Criatura"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = -96.0
+offset_right = -14.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 2
+alignment = 2
+
+[node name="Nombre_Transformacion" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen/Margen_Imagen/Imagen_Criatura/Texto_Imagen"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 26
+text = "Nombre de transformación"
+autowrap_mode = 3
+
+[node name="Fase_Transformacion" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen/Margen_Imagen/Imagen_Criatura/Texto_Imagen"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.72, 0.38, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
+text = "Fase —"
+
+[node name="Subtitulo_Transformacion" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Panel_Imagen/Margen_Imagen/Imagen_Criatura/Texto_Imagen"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.84, 0.84, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 14
+text = "Nº — · — · —"
+autowrap_mode = 3
+
+[node name="Cuerpo_Centro" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Boton_Base_Datos" type="Button" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Base de datos"
+
+[node name="Panel_Pericias" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Margen_Pericias" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro/Panel_Pericias"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Contenido_Pericias" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro/Panel_Pericias/Margen_Pericias"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Titulo_Pericias" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro/Panel_Pericias/Margen_Pericias/Contenido_Pericias"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Pericias"
+
+[node name="Separador_Pericias" type="HSeparator" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro/Panel_Pericias/Margen_Pericias/Contenido_Pericias"]
+layout_mode = 2
+
+[node name="Scroll_Pericias" type="ScrollContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro/Panel_Pericias/Margen_Pericias/Contenido_Pericias"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Lista_Pericias" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Centro/Cuerpo_Centro/Panel_Pericias/Margen_Pericias/Contenido_Pericias/Scroll_Pericias"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Columna_Derecha" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje"]
+custom_minimum_size = Vector2(330, 0)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Panel_D100" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha"]
+layout_mode = 2
+
+[node name="Margen_D100" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_D100"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Contenido_D100" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_D100/Margen_D100"]
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="Titulo_D100" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_D100/Margen_D100/Contenido_D100"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 14
+text = "Dado de 100 especial"
+horizontal_alignment = 1
+
+[node name="Resultado_D100" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_D100/Margen_D100/Contenido_D100"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "—"
+horizontal_alignment = 1
+
+[node name="Boton_Tirar_D100" type="Button" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_D100/Margen_D100/Contenido_D100"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Tirar d100"
+
+[node name="Mensaje_Duplicada" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_D100/Margen_D100/Contenido_D100"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "Tirada Duplicada"
+horizontal_alignment = 1
+
+[node name="Panel_PT" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha"]
+layout_mode = 2
+
+[node name="Margen_PT" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_PT"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Contenido_PT" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_PT/Margen_PT"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Titulo_PT" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_PT/Margen_PT/Contenido_PT"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.72, 0.38, 1)
+theme_override_font_sizes/font_size = 14
+text = "PT · Transformación"
+
+[node name="Barra_PT" type="ProgressBar" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_PT/Margen_PT/Contenido_PT"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_fondo_barra")
+theme_override_styles/fill = SubResource("StyleBoxFlat_barra_transformacion")
+show_percentage = false
+
+[node name="Valor_PT" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_PT/Margen_PT/Contenido_PT"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
+theme_override_font_sizes/font_size = 14
+text = "— / —"
+horizontal_alignment = 2
+
+[node name="Panel_Habilidades" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Margen_Habilidades" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_Habilidades"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Contenido_Habilidades" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_Habilidades/Margen_Habilidades"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Titulo_Habilidades" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Habilidades"
+
+[node name="Separador_Habilidades" type="HSeparator" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades"]
+layout_mode = 2
+
+[node name="Lista_Habilidades" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="Etiqueta_Sin_Habilidades" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades/Lista_Habilidades"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.62, 0.62, 0.68, 1)
+text = "Sin habilidades"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Boton_Inventario" type="Button" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Derecha"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Inventario"
 
 [node name="Objetos" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas"]
 visible = false
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 metadata/_tab_index = 1
 
 [node name="Contenido_Objetos" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos"]
@@ -129,7 +639,7 @@ size_flags_vertical = 8
 [node name="Titulo_Objetos" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Cabecera_Objetos"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "Gestión de objetos"
 
 [node name="Boton_Nuevo_Objeto" type="Button" parent="Margenes_Principales/Estructura_Principal/Pantallas/Objetos/Contenido_Objetos/Cabecera_Objetos"]
@@ -261,10 +771,10 @@ text = "Eliminar"
 [node name="Monedas" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas"]
 visible = false
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 metadata/_tab_index = 2
 
 [node name="Contenido_Monedas" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Monedas"]
@@ -273,7 +783,7 @@ theme_override_constants/separation = 12
 
 [node name="Titulo_Monedas" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Monedas/Contenido_Monedas"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "Valor de las monedas"
 
 [node name="Texto_Monedas" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Monedas/Contenido_Monedas"]
@@ -295,11 +805,12 @@ text = "El cobre de Lirios vale 0 (sin valor): no se puede convertir nada a él.
 autowrap_mode = 3
 
 [node name="Transformaciones" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas"]
+visible = false
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 metadata/_tab_index = 3
 
 [node name="Contenido_Transformaciones" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones"]
@@ -308,323 +819,16 @@ theme_override_constants/separation = 12
 
 [node name="Titulo_Transformaciones" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Transformaciones"
+theme_override_font_sizes/font_size = 28
+text = "Base de datos"
 
-[node name="Fila_Principal" type="HBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 12
-
-[node name="Columna_Izquierda" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal"]
-custom_minimum_size = Vector2(280, 0)
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Panel_D100" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda"]
-layout_mode = 2
-
-[node name="Margen_D100" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_D100"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="Contenido_D100" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_D100/Margen_D100"]
-layout_mode = 2
-theme_override_constants/separation = 8
-alignment = 1
-
-[node name="Resultado_D100" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_D100/Margen_D100/Contenido_D100"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 64
-text = "—"
-horizontal_alignment = 1
-
-[node name="Boton_Tirar_D100" type="Button" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_D100/Margen_D100/Contenido_D100"]
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Tirar d100"
-
-[node name="Mensaje_Duplicada" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_D100/Margen_D100/Contenido_D100"]
-visible = false
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1)
-theme_override_font_sizes/font_size = 18
-text = "Tirada Duplicada"
-horizontal_alignment = 1
-
-[node name="Panel_Puntos" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Margen_Puntos" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_Puntos"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="Contenido_Puntos" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_Puntos/Margen_Puntos"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Titulo_Puntos" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_Puntos/Margen_Puntos/Contenido_Puntos"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Puntos"
-
-[node name="Etiqueta_Transformacion" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_Puntos/Margen_Puntos/Contenido_Puntos"]
-layout_mode = 2
-text = "Transformación"
-
-[node name="Barra_Transformacion" type="ProgressBar" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_Puntos/Margen_Puntos/Contenido_Puntos"]
-custom_minimum_size = Vector2(0, 18)
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_fondo_barra")
-theme_override_styles/fill = SubResource("StyleBoxFlat_barra_transformacion")
-show_percentage = false
-
-[node name="Valor_Transformacion" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_Puntos/Margen_Puntos/Contenido_Puntos"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
-text = "— / —"
-horizontal_alignment = 2
-
-[node name="Etiqueta_Mutacion" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_Puntos/Margen_Puntos/Contenido_Puntos"]
-layout_mode = 2
-text = "Mutación"
-
-[node name="Barra_Mutacion" type="ProgressBar" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_Puntos/Margen_Puntos/Contenido_Puntos"]
-custom_minimum_size = Vector2(0, 18)
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_fondo_barra")
-theme_override_styles/fill = SubResource("StyleBoxFlat_barra_mutacion")
-show_percentage = false
-
-[node name="Valor_Mutacion" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Columna_Izquierda/Panel_Puntos/Margen_Puntos/Contenido_Puntos"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.72, 0.72, 0.78, 1)
-text = "— / —"
-horizontal_alignment = 2
-
-[node name="Panel_Imagen" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Margen_Imagen" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Imagen"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="Contenido_Imagen" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Imagen/Margen_Imagen"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Etiqueta_Criatura" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Imagen/Margen_Imagen/Contenido_Imagen"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Criatura nº —"
-horizontal_alignment = 1
-
-[node name="Imagen_Criatura" type="TextureRect" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Imagen/Margen_Imagen/Contenido_Imagen"]
-custom_minimum_size = Vector2(0, 200)
-layout_mode = 2
-size_flags_vertical = 3
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Boton_Estadisticas" type="Button" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Imagen/Margen_Imagen/Contenido_Imagen"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "Ver estadísticas"
-
-[node name="Panel_Habilidades" type="PanelContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal"]
-custom_minimum_size = Vector2(340, 0)
-layout_mode = 2
-
-[node name="Margen_Habilidades" type="MarginContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Habilidades"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="Contenido_Habilidades" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Habilidades/Margen_Habilidades"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Titulo_Habilidades" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Habilidades"
-
-[node name="Separador_Habilidades" type="HSeparator" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades"]
-layout_mode = 2
-
-[node name="Lista_Habilidades" type="VBoxContainer" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 8
-
-[node name="Etiqueta_Sin_Habilidades" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones/Fila_Principal/Panel_Habilidades/Margen_Habilidades/Contenido_Habilidades/Lista_Habilidades"]
+[node name="Texto_Transformaciones" type="Label" parent="Margenes_Principales/Estructura_Principal/Pantallas/Transformaciones/Contenido_Transformaciones"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.62, 0.62, 0.68, 1)
-text = "Sin habilidades"
+text = "Catálogo de criaturas 001–100, bloques de 10 e Hitos."
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Ventana_Estadisticas" type="Window" parent="."]
-title = "Estadísticas"
-initial_position = 1
-size = Vector2i(840, 440)
-visible = false
-transient = true
-unresizable = true
-
-[node name="Margen_Ventana_Estadisticas" type="MarginContainer" parent="Ventana_Estadisticas"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
-
-[node name="Contenido_Ventana_Estadisticas" type="VBoxContainer" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas"]
-layout_mode = 2
-theme_override_constants/separation = 14
-
-[node name="Panel_Estadisticas" type="PanelContainer" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Margen_Estadisticas" type="MarginContainer" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas"]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 16
-
-[node name="Contenido_Estadisticas" type="VBoxContainer" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="Titulo_Estadisticas" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Criatura nº —"
-
-[node name="Grid_Estadisticas" type="GridContainer" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/h_separation = 32
-theme_override_constants/v_separation = 14
-columns = 6
-
-[node name="Etiqueta_Nombre" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Nombre:"
-
-[node name="Nombre_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_Tipo" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Tipo:"
-
-[node name="Tipo_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_Dificultad" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Dificultad:"
-
-[node name="Dificultad_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_CA" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "CA:"
-
-[node name="CA_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_PG" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "PG:"
-
-[node name="PG_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_Velocidad" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Velocidad:"
-
-[node name="Velocidad_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_Fuerza" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Fuerza:"
-
-[node name="Fuerza_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_Destreza" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Destreza:"
-
-[node name="Destreza_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_Constitucion" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Constitución:"
-
-[node name="Constitucion_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_Inteligencia" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Inteligencia:"
-
-[node name="Inteligencia_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_Sabiduria" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Sabiduría:"
-
-[node name="Sabiduria_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
-
-[node name="Etiqueta_Carisma" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "Carisma:"
-
-[node name="Carisma_Criatura" type="Label" parent="Ventana_Estadisticas/Margen_Ventana_Estadisticas/Contenido_Ventana_Estadisticas/Panel_Estadisticas/Margen_Estadisticas/Contenido_Estadisticas/Grid_Estadisticas"]
-layout_mode = 2
-text = "—"
 
 [node name="Ventana_Objeto" type="Window" parent="."]
 title = "Nuevo Objeto"

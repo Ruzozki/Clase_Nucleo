@@ -97,7 +97,10 @@ var ruta_boton_eliminar_objeto: NodePath
 @export_node_path("GridContainer")
 var ruta_tabla_monedas: NodePath
 
-@export_category("Transformaciones (d100)")
+@export_category("Pantalla de personaje")
+
+@export_node_path("TabContainer")
+var ruta_pantallas: NodePath
 
 @export_node_path("Label")
 var ruta_resultado_d100: NodePath
@@ -111,23 +114,47 @@ var ruta_mensaje_duplicada: NodePath
 @export_node_path("Label")
 var ruta_etiqueta_criatura: NodePath
 
-@export_node_path("Button")
-var ruta_boton_estadisticas: NodePath
+@export_node_path("Label")
+var ruta_subtitulo_criatura: NodePath
 
-@export_node_path("Window")
-var ruta_ventana_estadisticas: NodePath
+@export_node_path("Label")
+var ruta_fase_criatura: NodePath
 
 @export_node_path("TextureRect")
 var ruta_imagen_criatura: NodePath
 
-@export_node_path("Label")
-var ruta_titulo_estadisticas: NodePath
-
-@export_node_path("GridContainer")
-var ruta_grid_estadisticas: NodePath
-
 @export_node_path("VBoxContainer")
 var ruta_lista_habilidades: NodePath
+
+@export_node_path("Button")
+var ruta_boton_base_datos: NodePath
+
+@export_node_path("Button")
+var ruta_boton_inventario: NodePath
+
+@export_node_path("GridContainer")
+var ruta_grid_atributos: NodePath
+
+@export_node_path("Label")
+var ruta_valor_ca: NodePath
+
+@export_node_path("Label")
+var ruta_valor_pg: NodePath
+
+@export_node_path("Label")
+var ruta_valor_vel: NodePath
+
+@export_node_path("ProgressBar")
+var ruta_barra_pm: NodePath
+
+@export_node_path("Label")
+var ruta_valor_pt: NodePath
+
+@export_node_path("ProgressBar")
+var ruta_barra_pt: NodePath
+
+@export_node_path("VBoxContainer")
+var ruta_lista_pericias: NodePath
 
 # ==================================================
 # REFERENCIAS INTERNAS
@@ -158,16 +185,25 @@ var tabla_monedas: GridContainer
 var boton_editar_objeto: Button
 var boton_eliminar_objeto: Button
 
+var pantallas: TabContainer
+
 var etiqueta_resultado_d100: Label
 var boton_tirar_d100: Button
 var etiqueta_duplicada: Label
 var etiqueta_criatura: Label
-var boton_estadisticas: Button
-var ventana_estadisticas: Window
+var subtitulo_criatura: Label
+var etiqueta_fase: Label
 var imagen_criatura: TextureRect
-var titulo_estadisticas: Label
-var grid_estadisticas: GridContainer
 var lista_habilidades: VBoxContainer
+var boton_base_datos: Button
+var boton_inventario: Button
+var grid_atributos: GridContainer
+var valor_ca: Label
+var valor_pg: Label
+var barra_pm: ProgressBar
+var valor_pt: Label
+var barra_pt: ProgressBar
+var lista_pericias: VBoxContainer
 var dialogo_habilidad: AcceptDialog
 
 var dialogo_aviso: AcceptDialog
@@ -203,6 +239,12 @@ const RUTA_CRIATURAS: String = "res://Recursos/Criaturas"
 ## Criaturas cargadas al arrancar, ordenadas por número.
 var criaturas: Array[Criatura] = []
 
+## Posición de cada pestaña dentro del TabContainer de la escena.
+const PESTANA_PERSONAJE: int = 0
+const PESTANA_OBJETOS: int = 1
+const PESTANA_MONEDAS: int = 2
+const PESTANA_BASE_DATOS: int = 3
+
 # ==================================================
 # INICIALIZACIÓN
 # ==================================================
@@ -219,9 +261,13 @@ func _ready() -> void:
 	cargar_categorias()
 	cargar_filtro_categorias()
 	cargar_tabla_monedas()
+	pantallas.set_tab_title(PESTANA_BASE_DATOS, "Base de datos")
+	# Objetos y Base de datos se alcanzan con los botones del panel de personaje:
+	# sus pestañas quedan ocultas de la barra superior.
+	pantallas.set_tab_hidden(PESTANA_OBJETOS, true)
+	pantallas.set_tab_hidden(PESTANA_BASE_DATOS, true)
 	ventana_objeto.hide()
-	ventana_estadisticas.hide()
-	
+
 	cargar_inventario()
 	cargar_d100()
 	cargar_criaturas()
@@ -357,6 +403,10 @@ func cargar_referencias() -> bool:
 		ruta_tabla_monedas
 	) as GridContainer
 
+	pantallas = get_node_or_null(
+		ruta_pantallas
+	) as TabContainer
+
 	etiqueta_resultado_d100 = get_node_or_null(
 		ruta_resultado_d100
 	) as Label
@@ -373,28 +423,56 @@ func cargar_referencias() -> bool:
 		ruta_etiqueta_criatura
 	) as Label
 
-	boton_estadisticas = get_node_or_null(
-		ruta_boton_estadisticas
-	) as Button
+	subtitulo_criatura = get_node_or_null(
+		ruta_subtitulo_criatura
+	) as Label
 
-	ventana_estadisticas = get_node_or_null(
-		ruta_ventana_estadisticas
-	) as Window
+	etiqueta_fase = get_node_or_null(
+		ruta_fase_criatura
+	) as Label
 
 	imagen_criatura = get_node_or_null(
 		ruta_imagen_criatura
 	) as TextureRect
 
-	titulo_estadisticas = get_node_or_null(
-		ruta_titulo_estadisticas
-	) as Label
-
-	grid_estadisticas = get_node_or_null(
-		ruta_grid_estadisticas
-	) as GridContainer
-
 	lista_habilidades = get_node_or_null(
 		ruta_lista_habilidades
+	) as VBoxContainer
+
+	boton_base_datos = get_node_or_null(
+		ruta_boton_base_datos
+	) as Button
+
+	boton_inventario = get_node_or_null(
+		ruta_boton_inventario
+	) as Button
+
+	grid_atributos = get_node_or_null(
+		ruta_grid_atributos
+	) as GridContainer
+
+	valor_ca = get_node_or_null(
+		ruta_valor_ca
+	) as Label
+
+	valor_pg = get_node_or_null(
+		ruta_valor_pg
+	) as Label
+
+	barra_pm = get_node_or_null(
+		ruta_barra_pm
+	) as ProgressBar
+
+	valor_pt = get_node_or_null(
+		ruta_valor_pt
+	) as Label
+
+	barra_pt = get_node_or_null(
+		ruta_barra_pt
+	) as ProgressBar
+
+	lista_pericias = get_node_or_null(
+		ruta_lista_pericias
 	) as VBoxContainer
 
 	boton_editar_objeto = get_node_or_null(
@@ -513,6 +591,12 @@ func cargar_referencias() -> bool:
 		)
 		return false
 
+	if pantallas == null:
+		push_error(
+			"No se asignó correctamente Pantallas."
+		)
+		return false
+
 	if etiqueta_resultado_d100 == null:
 		push_error(
 			"No se asignó correctamente Resultado_D100."
@@ -533,19 +617,19 @@ func cargar_referencias() -> bool:
 
 	if etiqueta_criatura == null:
 		push_error(
-			"No se asignó correctamente Etiqueta_Criatura."
+			"No se asignó correctamente Nombre_Transformacion."
 		)
 		return false
 
-	if boton_estadisticas == null:
+	if subtitulo_criatura == null:
 		push_error(
-			"No se asignó correctamente Boton_Estadisticas."
+			"No se asignó correctamente Subtitulo_Transformacion."
 		)
 		return false
 
-	if ventana_estadisticas == null:
+	if etiqueta_fase == null:
 		push_error(
-			"No se asignó correctamente Ventana_Estadisticas."
+			"No se asignó correctamente Fase_Transformacion."
 		)
 		return false
 
@@ -555,21 +639,63 @@ func cargar_referencias() -> bool:
 		)
 		return false
 
-	if titulo_estadisticas == null:
-		push_error(
-			"No se asignó correctamente Titulo_Estadisticas."
-		)
-		return false
-
-	if grid_estadisticas == null:
-		push_error(
-			"No se asignó correctamente Grid_Estadisticas."
-		)
-		return false
-
 	if lista_habilidades == null:
 		push_error(
 			"No se asignó correctamente Lista_Habilidades."
+		)
+		return false
+
+	if boton_base_datos == null:
+		push_error(
+			"No se asignó correctamente Boton_Base_Datos."
+		)
+		return false
+
+	if boton_inventario == null:
+		push_error(
+			"No se asignó correctamente Boton_Inventario."
+		)
+		return false
+
+	if grid_atributos == null:
+		push_error(
+			"No se asignó correctamente Grid_Atributos."
+		)
+		return false
+
+	if valor_ca == null:
+		push_error(
+			"No se asignó correctamente Valor_CA."
+		)
+		return false
+
+	if valor_pg == null:
+		push_error(
+			"No se asignó correctamente Valor_PG."
+		)
+		return false
+
+	if barra_pm == null:
+		push_error(
+			"No se asignó correctamente Barra_PM."
+		)
+		return false
+
+	if valor_pt == null:
+		push_error(
+			"No se asignó correctamente Valor_PT."
+		)
+		return false
+
+	if barra_pt == null:
+		push_error(
+			"No se asignó correctamente Barra_PT."
+		)
+		return false
+
+	if lista_pericias == null:
+		push_error(
+			"No se asignó correctamente Lista_Pericias."
 		)
 		return false
 
@@ -634,18 +760,18 @@ func conectar_botones() -> void:
 			_on_boton_tirar_d100_pressed
 		)
 
-	if not boton_estadisticas.pressed.is_connected(
-		_on_boton_estadisticas_pressed
+	if not boton_base_datos.pressed.is_connected(
+		_on_boton_base_datos_pressed
 	):
-		boton_estadisticas.pressed.connect(
-			_on_boton_estadisticas_pressed
+		boton_base_datos.pressed.connect(
+			_on_boton_base_datos_pressed
 		)
 
-	if not ventana_estadisticas.close_requested.is_connected(
-		_on_ventana_estadisticas_close_requested
+	if not boton_inventario.pressed.is_connected(
+		_on_boton_inventario_pressed
 	):
-		ventana_estadisticas.close_requested.connect(
-			_on_ventana_estadisticas_close_requested
+		boton_inventario.pressed.connect(
+			_on_boton_inventario_pressed
 		)
 	
 	if not lista_objetos.item_selected.is_connected(
@@ -1028,23 +1154,6 @@ func cargar_d100() -> void:
 # CRIATURAS
 # ==================================================
 
-## Etiquetas del grid de estadísticas que se rellenan con datos.
-const ETIQUETAS_ESTADISTICAS: Array[String] = [
-	"Nombre_Criatura",
-	"Tipo_Criatura",
-	"Dificultad_Criatura",
-	"CA_Criatura",
-	"PG_Criatura",
-	"Velocidad_Criatura",
-	"Fuerza_Criatura",
-	"Destreza_Criatura",
-	"Constitucion_Criatura",
-	"Inteligencia_Criatura",
-	"Sabiduria_Criatura",
-	"Carisma_Criatura",
-]
-
-
 ## Carga todos los .tres de RUTA_CRIATURAS, los normaliza y los ordena.
 func cargar_criaturas() -> void:
 
@@ -1099,86 +1208,162 @@ func buscar_criatura(numero: int) -> Criatura:
 	return null
 
 
-## Refresca la criatura mostrada según la última tirada del d100.
+## Refresca la transformación mostrada según la última tirada del d100.
 func actualizar_criatura() -> void:
 
 	if ultima_tirada_d100 <= 0:
-		mostrar_criatura_vacia("Criatura nº —")
+		mostrar_criatura_vacia(
+			"Sin transformación",
+			"Tira el d100 para empezar"
+		)
 		return
 
 	var criatura := buscar_criatura(ultima_tirada_d100)
 
 	if criatura == null:
 		mostrar_criatura_vacia(
-			"Criatura nº %d · sin ficha" % ultima_tirada_d100
+			"Criatura nº %d · sin ficha" % ultima_tirada_d100,
+			"No hay ficha en Recursos/Criaturas"
 		)
 		return
 
-	etiqueta_criatura.text = "Criatura nº %d · %s" % [
+	var fase := criatura.obtener_fase(1)
+	var nombre_visible := criatura.nombre
+
+	if fase != null and not fase.nombre.is_empty():
+		nombre_visible = fase.nombre
+
+	etiqueta_criatura.text = nombre_visible
+	etiqueta_fase.text = "Fase 1"
+	subtitulo_criatura.text = "Nº %03d · %s · Dificultad %d/%d · %s" % [
 		criatura.numero,
-		criatura.nombre,
+		criatura.tipo,
+		criatura.dificultad,
+		Criatura.DIFICULTAD_MAXIMA,
+		criatura.nombre_dificultad(),
 	]
-	titulo_estadisticas.text = etiqueta_criatura.text
 	imagen_criatura.texture = criatura.imagen
 
-	rellenar_estadisticas(criatura)
+	rellenar_atributos(fase)
+	rellenar_combate(fase)
+	rellenar_puntos()
 	rellenar_habilidades(criatura)
+	rellenar_pericias(fase)
 
 
-## Deja el panel y el popup sin datos de criatura.
-func mostrar_criatura_vacia(texto: String) -> void:
+## Deja la pantalla sin datos de criatura.
+func mostrar_criatura_vacia(texto: String, subtitulo: String) -> void:
 
 	etiqueta_criatura.text = texto
-	titulo_estadisticas.text = texto
+	subtitulo_criatura.text = subtitulo
+	etiqueta_fase.text = "Fase —"
 	imagen_criatura.texture = null
 
-	rellenar_estadisticas(null)
+	rellenar_atributos(null)
+	rellenar_combate(null)
+	rellenar_puntos()
 	rellenar_habilidades(null)
+	rellenar_pericias(null)
 
 
-## Rellena el grid del popup. Con null, deja todas las etiquetas en "—".
-func rellenar_estadisticas(criatura: Criatura) -> void:
+## Rellena los seis atributos del grid. Con null, los deja en "—".
+func rellenar_atributos(fase: Fase) -> void:
 
-	for nombre in ETIQUETAS_ESTADISTICAS:
-		poner_texto_estadistica(nombre, "—")
+	for atributo in ReglasDnD.ATRIBUTOS:
 
-	if criatura == null:
-		return
+		var etiqueta := grid_atributos.get_node_or_null(
+			"Valor_" + atributo
+		) as Label
 
-	poner_texto_estadistica("Nombre_Criatura", criatura.nombre)
-	poner_texto_estadistica("Tipo_Criatura", criatura.tipo)
-	poner_texto_estadistica(
-		"Dificultad_Criatura",
-		"%d/%d · %s" % [
-			criatura.dificultad,
-			Criatura.DIFICULTAD_MAXIMA,
-			criatura.nombre_dificultad(),
+		if etiqueta == null:
+			continue
+
+		if fase == null:
+			etiqueta.text = "—"
+			continue
+
+		var valor := fase.valor_atributo(atributo)
+		var modificador := ReglasDnD.modificador(valor)
+
+		etiqueta.text = "%d (%s)" % [
+			valor,
+			ReglasDnD.texto_modificador(modificador),
 		]
-	)
-	var fase := criatura.obtener_fase(1)
+
+
+## Rellena CA y PG de la fase. Con null, los deja en "—".
+func rellenar_combate(fase: Fase) -> void:
 
 	if fase == null:
+		valor_ca.text = "—"
+		valor_pg.text = "—"
 		return
 
-	poner_texto_estadistica("CA_Criatura", str(fase.ca))
-	poner_texto_estadistica("PG_Criatura", str(fase.pg))
-	poner_texto_estadistica("Velocidad_Criatura", fase.velocidad)
-	poner_texto_estadistica("Fuerza_Criatura", str(fase.fuerza))
-	poner_texto_estadistica("Destreza_Criatura", str(fase.destreza))
-	poner_texto_estadistica("Constitucion_Criatura", str(fase.constitucion))
-	poner_texto_estadistica("Inteligencia_Criatura", str(fase.inteligencia))
-	poner_texto_estadistica("Sabiduria_Criatura", str(fase.sabiduria))
-	poner_texto_estadistica("Carisma_Criatura", str(fase.carisma))
+	valor_ca.text = str(fase.ca)
+	valor_pg.text = str(fase.pg)
 
 
-func poner_texto_estadistica(nombre: String, texto: String) -> void:
+## PM y PT todavía no tienen sistema: se muestran vacíos.
+func rellenar_puntos() -> void:
 
-	var etiqueta := grid_estadisticas.get_node_or_null(
-		nombre
-	) as Label
+	barra_pm.value = 0
+	barra_pt.value = 0
+	valor_pt.text = "— / —"
 
-	if etiqueta != null:
-		etiqueta.text = texto
+
+## Las 18 pericias, con el modificador y las competentes resaltadas.
+func rellenar_pericias(fase: Fase) -> void:
+
+	for hijo in lista_pericias.get_children():
+		lista_pericias.remove_child(hijo)
+		hijo.queue_free()
+
+	for nombre in ReglasDnD.nombres_pericias():
+
+		var fila := HBoxContainer.new()
+
+		var etiqueta_nombre := Label.new()
+		etiqueta_nombre.text = nombre
+		etiqueta_nombre.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		etiqueta_nombre.add_theme_font_size_override("font_size", 15)
+
+		var etiqueta_valor := Label.new()
+		etiqueta_valor.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		etiqueta_valor.add_theme_font_size_override("font_size", 15)
+
+		if fase == null:
+
+			etiqueta_valor.text = "—"
+			etiqueta_nombre.add_theme_color_override(
+				"font_color",
+				Color(0.62, 0.62, 0.68, 1)
+			)
+			etiqueta_valor.add_theme_color_override(
+				"font_color",
+				Color(0.62, 0.62, 0.68, 1)
+			)
+		else:
+
+			var valor := fase.valor_pericia(
+				nombre,
+				ReglasDnD.BONO_COMPETENCIA_PROVISIONAL
+			)
+
+			etiqueta_valor.text = ReglasDnD.texto_modificador(valor)
+
+			if fase.es_competente_pericia(nombre):
+				etiqueta_nombre.add_theme_color_override(
+					"font_color",
+					Color(0.86, 0.72, 0.38, 1)
+				)
+				etiqueta_valor.add_theme_color_override(
+					"font_color",
+					Color(0.86, 0.72, 0.38, 1)
+				)
+
+		fila.add_child(etiqueta_nombre)
+		fila.add_child(etiqueta_valor)
+		lista_pericias.add_child(fila)
 
 
 ## Sustituye la lista de habilidades por un botón por habilidad.
@@ -1216,7 +1401,7 @@ func rellenar_habilidades(criatura: Criatura) -> void:
 		boton.name = "Habilidad_%d" % indice
 		boton.text = habilidad.nombre
 		boton.tooltip_text = habilidad.descripcion
-		boton.custom_minimum_size = Vector2(0, 42)
+		boton.custom_minimum_size = Vector2(0, 48)
 		boton.pressed.connect(_on_habilidad_pressed.bind(habilidad))
 		lista_habilidades.add_child(boton)
 
@@ -1461,14 +1646,14 @@ func _on_boton_tirar_d100_pressed() -> void:
 	boton_tirar_d100.disabled = false
 
 
-func _on_boton_estadisticas_pressed() -> void:
+func _on_boton_base_datos_pressed() -> void:
 
-	ventana_estadisticas.popup_centered()
+	pantallas.current_tab = PESTANA_BASE_DATOS
 
 
-func _on_ventana_estadisticas_close_requested() -> void:
+func _on_boton_inventario_pressed() -> void:
 
-	ventana_estadisticas.hide()
+	pantallas.current_tab = PESTANA_OBJETOS
 
 
 # ==================================================

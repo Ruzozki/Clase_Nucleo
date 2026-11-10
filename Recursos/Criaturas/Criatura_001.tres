@@ -20,8 +20,8 @@ constitucion = 13
 inteligencia = 8
 sabiduria = 16
 carisma = 10
-salvaciones_competentes = 0
-pericias_competentes = 0
+salvaciones_competentes = 18
+pericias_competentes = 66064
 metadata/_custom_type_script = "uid://bhrvt1cxultx6"
 
 [sub_resource type="Resource" id="Resource_71o2o"]
@@ -51,5 +51,5 @@ tipo = "Planta"
 dificultad = 1
 imagen = ExtResource("2_hiciq")
 habilidades = Array[ExtResource("1_dseo0")]([])
-fases = Array[ExtResource("1_ljnrg")]([SubResource("Resource_ljnrg"), SubResource("Resource_71o2o")])
+fases = Array[ExtResource("1_ljnrg")]([SubResource("Resource_ljnrg"), SubResource("Resource_71o2o"), null, null])
 metadata/_custom_type_script = "uid://mqaol8acbgro"
