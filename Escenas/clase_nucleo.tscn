@@ -377,7 +377,7 @@ theme_override_font_sizes/font_size = 14
 text = "PM"
 
 [node name="Barra_PM" type="ProgressBar" parent="Margenes_Principales/Estructura_Principal/Pantallas/Personaje/Contenido_Personaje/Columna_Info/Panel_PM/Margen_PM/Contenido_PM"]
-custom_minimum_size = Vector2(0, 12)
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_fondo_barra")
 theme_override_styles/fill = SubResource("StyleBoxFlat_barra_mutacion")

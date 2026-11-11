@@ -16,6 +16,8 @@ const DIFICULTAD_MAXIMA: int = 5
 
 ## Cada criatura tiene exactamente 4 fases de evolución.
 const NUMERO_FASES: int = 4
+## Cada criatura tiene exactamente 2 mutaciones: una positiva y una negativa.
+const NUMERO_MUTACIONES: int = 2
 
 ## Nombres de la escala de dificultad. El índice 0 es dificultad 1.
 const NOMBRES_DIFICULTAD: Array[String] = [
@@ -65,6 +67,9 @@ const TIPOS: Array[String] = [
 ## Las 4 fases de evolución, en orden: fase 1, 2, 3 y 4.
 @export var fases: Array[Fase] = []
 
+## Las 2 mutaciones de esta forma: una positiva y una negativa.
+@export var mutaciones: Array[Mutacion] = []
+
 ## Ajusta los valores a los rangos permitidos y limpia los textos.
 func normalizar() -> void:
 
@@ -88,7 +93,10 @@ func normalizar() -> void:
 	for fase in fases:
 		if fase != null:
 			fase.normalizar()
-
+			
+	for mutacion in mutaciones:
+		if mutacion != null:
+			mutacion.normalizar()
 ## True si tiene un número dentro de rango y un nombre utilizable.
 func es_valida() -> bool:
 
@@ -167,3 +175,51 @@ func problemas_fases() -> Array[String]:
 		nivel_anterior = fase.nivel_requerido
 
 	return problemas
+
+## Revisa las mutaciones y devuelve una lista de problemas.
+## Si la lista está vacía, las mutaciones están bien.
+func problemas_mutaciones() -> Array[String]:
+
+	var problemas: Array[String] = []
+
+	if mutaciones.size() != NUMERO_MUTACIONES:
+		problemas.append(
+			"tiene %d mutaciones en vez de %d"
+			% [mutaciones.size(), NUMERO_MUTACIONES]
+		)
+
+	var positivas := 0
+	var negativas := 0
+
+	for i in mutaciones.size():
+
+		var mutacion := mutaciones[i]
+
+		if mutacion == null:
+			problemas.append("la mutación %d está vacía" % (i + 1))
+			continue
+
+		if not mutacion.es_valida():
+			problemas.append("la mutación %d no tiene nombre" % (i + 1))
+
+		if mutacion.es_positiva():
+			positivas += 1
+		else:
+			negativas += 1
+
+	if positivas + negativas == NUMERO_MUTACIONES:
+		if positivas != 1 or negativas != 1:
+			problemas.append(
+				"debe tener 1 positiva y 1 negativa (tiene %d y %d)"
+				% [positivas, negativas]
+			)
+
+	return problemas
+
+## Devuelve la mutación con ese número (1 o 2), o null si no existe.
+func obtener_mutacion(numero_mutacion: int) -> Mutacion:
+
+	if numero_mutacion < 1 or numero_mutacion > mutaciones.size():
+		return null
+
+	return mutaciones[numero_mutacion - 1]

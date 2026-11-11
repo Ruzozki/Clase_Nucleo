@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Criatura" load_steps=7 format=3 uid="uid://b5a0v16tuk18g"]
+[gd_resource type="Resource" script_class="Criatura" load_steps=9 format=3 uid="uid://b5a0v16tuk18g"]
 
 [ext_resource type="Script" uid="uid://b1h86mwojlt6" path="res://Recursos/Recursos_Habilidad.gd" id="1_dseo0"]
 [ext_resource type="Script" uid="uid://mqaol8acbgro" path="res://Recursos/Recursos_Criatura.gd" id="1_lhqdx"]
 [ext_resource type="Script" uid="uid://bhrvt1cxultx6" path="res://Recursos/Recursos_Fase.gd" id="1_ljnrg"]
 [ext_resource type="Texture2D" uid="uid://dxwbtuw04vw5b" path="res://Asseds/Sprites/1794246980329.jpg" id="2_hiciq"]
+[ext_resource type="Script" uid="uid://c5pecqboyxyyr" path="res://Recursos/Recursos_Mutacion.gd" id="4_71o2o"]
 
 [sub_resource type="Resource" id="Resource_ljnrg"]
 script = ExtResource("1_ljnrg")
@@ -24,26 +25,42 @@ salvaciones_competentes = 18
 pericias_competentes = 66064
 metadata/_custom_type_script = "uid://bhrvt1cxultx6"
 
-[sub_resource type="Resource" id="Resource_71o2o"]
-script = ExtResource("1_ljnrg")
-numero = 2
-nombre = ""
-nivel_requerido = 3
-coste_pt = 1
-ca = 14
-pg = 32
-velocidad = "9 m"
-fuerza = 4
-destreza = 16
-constitucion = 14
-inteligencia = 8
-sabiduria = 17
-carisma = 10
-salvaciones_competentes = 18
-pericias_competentes = 66048
-metadata/_custom_type_script = "uid://bhrvt1cxultx6"
+[sub_resource type="Resource" id="Resource_trj1j"]
+script = ExtResource("4_71o2o")
+nombre = "Camisa de fuerza "
+tipo = "Negativa"
+riesgo = "El aliado que al que Latigias esta adherido comienza a recibir daño de espinas por turno. 1d4 por turno de daño punsante."
+recompensa = "Cada vez que el aliado reciba daño de las espinas, su siguiente ataque cuerpo a cuerpohace +1d4. (No se acumula)"
+duracion_turnos = 3
+mod_ca = 0
+mod_pg = 0
+mod_fuerza = 0
+mod_destreza = 0
+mod_constitucion = 0
+mod_inteligencia = 0
+mod_sabiduria = 0
+mod_carisma = 0
+metadata/_custom_type_script = "uid://c5pecqboyxyyr"
+
+[sub_resource type="Resource" id="Resource_ojjhw"]
+script = ExtResource("4_71o2o")
+nombre = "Abrazo Expuesto"
+tipo = "Positiva"
+riesgo = "Latígia sufre −2 CA mientras dure"
+recompensa = "Al inicio de cada turno del aliado, recupera 1d4 PG"
+duracion_turnos = 3
+mod_ca = 0
+mod_pg = 0
+mod_fuerza = 0
+mod_destreza = 0
+mod_constitucion = 0
+mod_inteligencia = 0
+mod_sabiduria = 0
+mod_carisma = 0
+metadata/_custom_type_script = "uid://c5pecqboyxyyr"
 
 [resource]
+resource_local_to_scene = true
 script = ExtResource("1_lhqdx")
 numero = 1
 nombre = "Latígia"
@@ -51,5 +68,6 @@ tipo = "Planta"
 dificultad = 1
 imagen = ExtResource("2_hiciq")
 habilidades = Array[ExtResource("1_dseo0")]([])
-fases = Array[ExtResource("1_ljnrg")]([SubResource("Resource_ljnrg"), SubResource("Resource_71o2o"), null, null])
+fases = Array[ExtResource("1_ljnrg")]([SubResource("Resource_ljnrg")])
+mutaciones = Array[ExtResource("4_71o2o")]([SubResource("Resource_trj1j"), SubResource("Resource_ojjhw")])
 metadata/_custom_type_script = "uid://mqaol8acbgro"

@@ -236,8 +236,12 @@ var tirada_d100_en_curso: bool = false
 
 ## Carpeta con los archivos .tres de cada criatura.
 const RUTA_CRIATURAS: String = "res://Recursos/Criaturas"
+const RUTA_HABILIDADES: String = "res://Recursos/Habilidades"
+
+var catalogo_habilidades: Array[Habilidad] = []
 ## Criaturas cargadas al arrancar, ordenadas por número.
 var criaturas: Array[Criatura] = []
+var nucleo: EstadoNucleo = EstadoNucleo.new()
 
 ## Posición de cada pestaña dentro del TabContainer de la escena.
 const PESTANA_PERSONAJE: int = 0
@@ -250,7 +254,7 @@ const PESTANA_BASE_DATOS: int = 3
 # ==================================================
 
 func _ready() -> void:
-
+	
 	crear_dialogo_aviso()
 	crear_dialogo_confirmacion()
 	crear_dialogo_habilidad()
@@ -271,10 +275,12 @@ func _ready() -> void:
 	cargar_inventario()
 	cargar_d100()
 	cargar_criaturas()
+	cargar_habilidades()
+	
 	actualizar_lista_objetos()
 	actualizar_panel_d100()
-
-
+	
+	
 func crear_dialogo_aviso() -> void:
 
 	dialogo_aviso = AcceptDialog.new()
@@ -1187,7 +1193,10 @@ func cargar_criaturas() -> void:
 				for problema in criatura.problemas_fases():
 					push_warning("Criatura %d: %s" % [criatura.numero, problema])
 				criaturas.append(criatura)
-
+				
+				for problema in criatura.problemas_mutaciones():
+					push_warning("Criatura %d: %s" % [criatura.numero, problema])
+					
 		archivo = carpeta.get_next()
 
 	carpeta.list_dir_end()
@@ -1207,7 +1216,75 @@ func buscar_criatura(numero: int) -> Criatura:
 
 	return null
 
+## Carga las habilidades de RUTA_HABILIDADES/NNN/ y comprueba que cada archivo
+## esté bien puesto. Las que fallan se avisan y no se cargan.
+func cargar_habilidades() -> void:
 
+	catalogo_habilidades.clear()
+
+	if not DirAccess.dir_exists_absolute(RUTA_HABILIDADES):
+		push_warning("No existe la carpeta " + RUTA_HABILIDADES)
+		return
+
+	var ids_vistos: Dictionary = {}
+
+	for nombre_carpeta in DirAccess.get_directories_at(RUTA_HABILIDADES):
+
+		var ruta_carpeta := RUTA_HABILIDADES + "/" + nombre_carpeta
+
+		for archivo in DirAccess.get_files_at(ruta_carpeta):
+
+			if not archivo.ends_with(".tres"):
+				continue
+
+			var ruta := ruta_carpeta + "/" + archivo
+			var recurso: Resource = load(ruta)
+			
+			if not (recurso is Habilidad):
+				push_warning("%s no es una Habilidad" % ruta)
+				continue
+
+			var habilidad := recurso as Habilidad
+			habilidad.normalizar()
+
+			var id: String = habilidad.obtener_id()
+			var problemas: Array[String] = []
+
+			if archivo.get_basename() != id:
+				problemas.append("el archivo debería llamarse %s.tres" % id)
+
+			if nombre_carpeta != "%03d" % habilidad.criatura:
+				problemas.append("debería estar en la carpeta %03d" % habilidad.criatura)
+
+			if ids_vistos.has(id):
+				problemas.append("el id %s está repetido" % id)
+
+			if not habilidad.es_valida():
+				problemas.append("no tiene nombre")
+
+			if not problemas.is_empty():
+				push_warning("Habilidad %s: %s" % [ruta, ", ".join(problemas)])
+				continue
+
+			ids_vistos[id] = true
+			catalogo_habilidades.append(habilidad)
+
+	catalogo_habilidades.sort_custom(
+		func(a: Habilidad, b: Habilidad) -> bool:
+			return a.obtener_id() < b.obtener_id()
+	)
+	
+## Devuelve las habilidades y pasivas de una criatura hasta esa fase, ordenadas
+## por id. Con fase_maxima = 1 (por ahora) salen solo las de fase 1.
+func habilidades_de(numero_criatura: int, fase_maxima: int = 1) -> Array[Habilidad]:
+
+	var resultado: Array[Habilidad] = []
+
+	for habilidad in catalogo_habilidades:
+		if habilidad.criatura == numero_criatura and habilidad.fase <= fase_maxima:
+			resultado.append(habilidad)
+
+	return resultado
 ## Refresca la transformación mostrada según la última tirada del d100.
 func actualizar_criatura() -> void:
 
@@ -1303,12 +1380,16 @@ func rellenar_combate(fase: Fase) -> void:
 	valor_pg.text = str(fase.pg)
 
 
-## PM y PT todavía no tienen sistema: se muestran vacíos.
+## Muestra los PM y los PT del Núcleo en sus barras.
+## El máximo de PT es provisional: son los iniciales, hasta que haya niveles.
 func rellenar_puntos() -> void:
 
-	barra_pm.value = 0
-	barra_pt.value = 0
-	valor_pt.text = "— / —"
+	barra_pm.max_value = EstadoNucleo.PM_MAXIMO
+	barra_pm.value = nucleo.pm
+
+	barra_pt.max_value = EstadoNucleo.PT_INICIALES
+	barra_pt.value = nucleo.pt
+	valor_pt.text = "%d / %d" % [nucleo.pt, EstadoNucleo.PT_INICIALES]
 
 
 ## Las 18 pericias, con el modificador y las competentes resaltadas.
@@ -1632,7 +1713,7 @@ func _on_boton_tirar_d100_pressed() -> void:
 	for i in PASOS_ANIMACION_D100:
 
 		etiqueta_resultado_d100.text = str(
-			randi_range(1, Dados.MAXIMO_ACTUAL_D100)
+			randi_range(1, Dados.DADO_ESPECIAL)
 		)
 
 		await get_tree().create_timer(
@@ -1640,6 +1721,7 @@ func _on_boton_tirar_d100_pressed() -> void:
 		).timeout
 
 	registrar_tirada_d100(resultado)
+	nucleo.transformar_en(buscar_criatura(resultado))
 	actualizar_panel_d100()
 	etiqueta_duplicada.visible = duplicada
 	tirada_d100_en_curso = false

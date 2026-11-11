@@ -9,12 +9,15 @@ extends RefCounted
 ## Dados normales de D&D 5e, sin contar el d100 especial.
 const DADOS_ESTANDAR: Array[int] = [4, 6, 8, 10, 12, 20]
 
+## Caras del dado de mutación. Es otro d100, distinto del de transformación.
+const DADO_MUTACION: int = 100
+
 ## Caras del dado de transformación.
 const DADO_ESPECIAL: int = 100
 
-## Máximo que puede salir ahora mismo en el d100.
-## Temporal: solo la criatura 001 está en pruebas, así que siempre sale 1.
-const MAXIMO_ACTUAL_D100: int = 1
+## Hasta qué número vale una tirada del d100 de transformación.
+## Temporal: la criatura 1 a 10 están en pruebas. En el futuro lo decidirán los Hitos.
+const UMBRAL_D100: int = 10
 
 ## Máximo de tiradas que se recuerdan del dado especial.
 const MAX_HISTORIAL: int = 5
@@ -32,12 +35,23 @@ static func tirar(caras: int) -> int:
 
 
 ## Tira el d100 de transformación.
-## Ahora mismo solo devuelve números del bloque desbloqueado (1–10).
+## Se tira un d100 de verdad; si sale más que el umbral, se vuelve a tirar.
+## Así el resultado siempre está entre 1 y UMBRAL_D100.
 static func tirar_d100() -> int:
 
-	return randi_range(1, MAXIMO_ACTUAL_D100)
+	var umbral := clampi(UMBRAL_D100, 1, DADO_ESPECIAL)
+	var resultado := tirar(DADO_ESPECIAL)
 
+	while resultado > umbral:
+		resultado = tirar(DADO_ESPECIAL)
 
+	return resultado
+
+## Tira el dado de mutación (otro d100, sin umbral). Devuelve de 1 a 100.
+static func tirar_dado_mutacion() -> int:
+
+	return tirar(DADO_MUTACION)
+	
 ## Añade una tirada al principio del historial y lo recorta a MAX_HISTORIAL.
 ## Devuelve una lista nueva (no modifica la que recibe).
 ## Ejemplo: [7, 91] + 42 → [42, 7, 91].
