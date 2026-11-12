@@ -120,29 +120,44 @@ var ruta_subtitulo_criatura: NodePath
 @export_node_path("Label")
 var ruta_fase_criatura: NodePath
 
-@export_node_path("TextureRect")
-var ruta_imagen_criatura: NodePath
+@export_node_path("Sprite3D")
+var ruta_sprite_criatura: NodePath
 
 @export_node_path("VBoxContainer")
 var ruta_lista_habilidades: NodePath
+
+@export_node_path("Control")
+var ruta_capa_estadisticas: NodePath
+
+@export_node_path("Control")
+var ruta_capa_pericias: NodePath
+
+@export_node_path("PanelContainer")
+var ruta_tarjeta_tirada: NodePath
+
+@export_node_path("Label")
+var ruta_etiqueta_tirada: NodePath
+
+@export_node_path("Label")
+var ruta_modo_tirada: NodePath
+
+@export_node_path("HBoxContainer")
+var ruta_fila_dados: NodePath
+
+@export_node_path("Label")
+var ruta_total_tirada: NodePath
+
+@export_node_path("Label")
+var ruta_estado_tirada: NodePath
+
+@export_node_path("VBoxContainer")
+var ruta_lista_tiradas: NodePath
 
 @export_node_path("Button")
 var ruta_boton_base_datos: NodePath
 
 @export_node_path("Button")
 var ruta_boton_inventario: NodePath
-
-@export_node_path("GridContainer")
-var ruta_grid_atributos: NodePath
-
-@export_node_path("Label")
-var ruta_valor_ca: NodePath
-
-@export_node_path("Label")
-var ruta_valor_pg: NodePath
-
-@export_node_path("Label")
-var ruta_valor_vel: NodePath
 
 @export_node_path("ProgressBar")
 var ruta_barra_pm: NodePath
@@ -152,9 +167,6 @@ var ruta_valor_pt: NodePath
 
 @export_node_path("ProgressBar")
 var ruta_barra_pt: NodePath
-
-@export_node_path("VBoxContainer")
-var ruta_lista_pericias: NodePath
 
 # ==================================================
 # REFERENCIAS INTERNAS
@@ -193,23 +205,33 @@ var etiqueta_duplicada: Label
 var etiqueta_criatura: Label
 var subtitulo_criatura: Label
 var etiqueta_fase: Label
-var imagen_criatura: TextureRect
+var sprite_criatura: Sprite3D
 var lista_habilidades: VBoxContainer
+var capa_estadisticas: Control
+var capa_pericias: Control
+var botones_pericia: Array[Button] = []
+var botones_estadistica: Dictionary = {}
 var boton_base_datos: Button
 var boton_inventario: Button
-var grid_atributos: GridContainer
-var valor_ca: Label
-var valor_pg: Label
 var barra_pm: ProgressBar
 var valor_pt: Label
 var barra_pt: ProgressBar
-var lista_pericias: VBoxContainer
 var dialogo_habilidad: AcceptDialog
 
 var dialogo_aviso: AcceptDialog
 ## Diálogo que pide confirmación antes de eliminar.
 var dialogo_confirmacion: ConfirmationDialog
 
+var tarjeta_tirada: PanelContainer
+var etiqueta_tirada: Label
+var modo_tirada: Label
+var fila_dados: HBoxContainer
+var total_tirada: Label
+var estado_tirada: Label
+var lista_tiradas: VBoxContainer
+var menu_tirada: PopupMenu
+var boton_tirada_pendiente: Button
+var tween_tarjeta: Tween
 
 # ==================================================
 # ALMACENAMIENTO
@@ -227,6 +249,8 @@ var objeto_en_edicion: Objeto = null
 
 ## Archivo donde se guarda el estado del d100 de transformación.
 const RUTA_D100: String = "user://d100.json"
+## Archivo donde se guarda el estado de la partida.
+const RUTA_PARTIDA: String = "user://partida.json"
 ## Última tirada del d100, o 0 si todavía no hay ninguna.
 var ultima_tirada_d100: int = 0
 ## Las 5 últimas tiradas del d100, de la más nueva a la más vieja.
@@ -258,6 +282,7 @@ func _ready() -> void:
 	crear_dialogo_aviso()
 	crear_dialogo_confirmacion()
 	crear_dialogo_habilidad()
+	crear_menu_tirada()
 	if not cargar_referencias():
 		return
 
@@ -271,7 +296,8 @@ func _ready() -> void:
 	pantallas.set_tab_hidden(PESTANA_OBJETOS, true)
 	pantallas.set_tab_hidden(PESTANA_BASE_DATOS, true)
 	ventana_objeto.hide()
-
+	
+	cargar_partida()
 	cargar_inventario()
 	cargar_d100()
 	cargar_criaturas()
@@ -437,14 +463,54 @@ func cargar_referencias() -> bool:
 		ruta_fase_criatura
 	) as Label
 
-	imagen_criatura = get_node_or_null(
-		ruta_imagen_criatura
-	) as TextureRect
-
+	sprite_criatura = get_node_or_null(
+		ruta_sprite_criatura
+	) as Sprite3D
+	
 	lista_habilidades = get_node_or_null(
 		ruta_lista_habilidades
 	) as VBoxContainer
 
+	capa_estadisticas = get_node_or_null(
+		ruta_capa_estadisticas
+	) as Control
+
+	_preparar_estadisticas()
+	
+	capa_pericias = get_node_or_null(
+		ruta_capa_pericias
+	) as Control
+
+	_preparar_pericias_hud()
+	
+	tarjeta_tirada = get_node_or_null(
+		ruta_tarjeta_tirada
+	) as PanelContainer
+
+	etiqueta_tirada = get_node_or_null(
+		ruta_etiqueta_tirada
+	) as Label
+
+	modo_tirada = get_node_or_null(
+		ruta_modo_tirada
+	) as Label
+
+	fila_dados = get_node_or_null(
+		ruta_fila_dados
+	) as HBoxContainer
+
+	total_tirada = get_node_or_null(
+		ruta_total_tirada
+	) as Label
+
+	estado_tirada = get_node_or_null(
+		ruta_estado_tirada
+	) as Label
+
+	lista_tiradas = get_node_or_null(
+		ruta_lista_tiradas
+	) as VBoxContainer
+	
 	boton_base_datos = get_node_or_null(
 		ruta_boton_base_datos
 	) as Button
@@ -452,18 +518,6 @@ func cargar_referencias() -> bool:
 	boton_inventario = get_node_or_null(
 		ruta_boton_inventario
 	) as Button
-
-	grid_atributos = get_node_or_null(
-		ruta_grid_atributos
-	) as GridContainer
-
-	valor_ca = get_node_or_null(
-		ruta_valor_ca
-	) as Label
-
-	valor_pg = get_node_or_null(
-		ruta_valor_pg
-	) as Label
 
 	barra_pm = get_node_or_null(
 		ruta_barra_pm
@@ -476,10 +530,6 @@ func cargar_referencias() -> bool:
 	barra_pt = get_node_or_null(
 		ruta_barra_pt
 	) as ProgressBar
-
-	lista_pericias = get_node_or_null(
-		ruta_lista_pericias
-	) as VBoxContainer
 
 	boton_editar_objeto = get_node_or_null(
 		ruta_boton_editar_objeto
@@ -639,9 +689,9 @@ func cargar_referencias() -> bool:
 		)
 		return false
 
-	if imagen_criatura == null:
+	if sprite_criatura == null:
 		push_error(
-			"No se asignó correctamente Imagen_Criatura."
+			"No se asignó correctamente Criatura_3D."
 		)
 		return false
 
@@ -663,24 +713,6 @@ func cargar_referencias() -> bool:
 		)
 		return false
 
-	if grid_atributos == null:
-		push_error(
-			"No se asignó correctamente Grid_Atributos."
-		)
-		return false
-
-	if valor_ca == null:
-		push_error(
-			"No se asignó correctamente Valor_CA."
-		)
-		return false
-
-	if valor_pg == null:
-		push_error(
-			"No se asignó correctamente Valor_PG."
-		)
-		return false
-
 	if barra_pm == null:
 		push_error(
 			"No se asignó correctamente Barra_PM."
@@ -696,12 +728,6 @@ func cargar_referencias() -> bool:
 	if barra_pt == null:
 		push_error(
 			"No se asignó correctamente Barra_PT."
-		)
-		return false
-
-	if lista_pericias == null:
-		push_error(
-			"No se asignó correctamente Lista_Pericias."
 		)
 		return false
 
@@ -779,7 +805,7 @@ func conectar_botones() -> void:
 		boton_inventario.pressed.connect(
 			_on_boton_inventario_pressed
 		)
-	
+
 	if not lista_objetos.item_selected.is_connected(
 		_on_lista_objetos_item_selected
 	):
@@ -1049,7 +1075,7 @@ func actualizar_panel_d100() -> void:
 
 	actualizar_criatura()
 	etiqueta_duplicada.visible = false
-
+	boton_tirar_d100.disabled = not nucleo.puede_tirar_d100()
 
 ## Registra una tirada del d100: actualiza la última, el historial y guarda.
 func registrar_tirada_d100(resultado: int) -> void:
@@ -1155,7 +1181,88 @@ func cargar_d100() -> void:
 	if ultima_tirada_d100 == 0 and not historial_d100.is_empty():
 		ultima_tirada_d100 = historial_d100[0]
 
+## Escribe nivel, PT, bonos y criaturas registradas en RUTA_PARTIDA.
+func guardar_partida() -> void:
 
+	var datos := {
+		"nivel": nucleo.nivel,
+		"pt": nucleo.pt,
+		"bonos_pt": nucleo.bonos_pt,
+		"registradas": nucleo.criaturas_registradas,
+	}
+
+	var archivo := FileAccess.open(RUTA_PARTIDA, FileAccess.WRITE)
+
+	if archivo == null:
+		push_error(
+			"No se pudo abrir " + RUTA_PARTIDA + " para guardar."
+		)
+		return
+
+	archivo.store_string(JSON.stringify(datos, "\t"))
+	archivo.close()
+
+
+## Lee RUTA_PARTIDA. Si no existe, arranca una partida nueva.
+func cargar_partida() -> void:
+
+	nucleo.nivel = 1
+	nucleo.bonos_pt = 0
+	nucleo.criaturas_registradas.clear()
+	nucleo.pt = nucleo.pt_maximos()
+
+	if not FileAccess.file_exists(RUTA_PARTIDA):
+		return
+
+	var archivo := FileAccess.open(RUTA_PARTIDA, FileAccess.READ)
+
+	if archivo == null:
+		push_error(
+			"No se pudo abrir " + RUTA_PARTIDA + " para leer."
+		)
+		return
+
+	var texto := archivo.get_as_text()
+	archivo.close()
+
+	var json := JSON.new()
+
+	if json.parse(texto) != OK:
+		return
+
+	if not (json.data is Dictionary):
+		return
+
+	var datos: Dictionary = json.data
+
+	var nivel: Variant = datos.get("nivel", 1)
+
+	if nivel is int or nivel is float:
+		nucleo.nivel = int(nivel)
+
+	var bonos: Variant = datos.get("bonos_pt", 0)
+
+	if bonos is int or bonos is float:
+		nucleo.bonos_pt = int(bonos)
+
+	var registradas: Variant = datos.get("registradas", [])
+
+	if registradas is Array:
+
+		for valor in registradas:
+
+			if not (valor is int or valor is float):
+				continue
+
+			nucleo.registrar_criatura(int(valor))
+
+	var pt: Variant = datos.get("pt", nucleo.pt_maximos())
+
+	if pt is int or pt is float:
+		nucleo.pt = int(pt)
+
+	nucleo.normalizar()
+	
 # ==================================================
 # CRIATURAS
 # ==================================================
@@ -1285,6 +1392,77 @@ func habilidades_de(numero_criatura: int, fase_maxima: int = 1) -> Array[Habilid
 			resultado.append(habilidad)
 
 	return resultado
+
+# ==================================================
+# ESCENARIO 3D
+# ==================================================
+
+## Altura en metros de la criatura en el escenario, sea cual sea el tamaño de su PNG.
+const ALTURA_SPRITE_3D: float = 2.2
+
+## Color del HUD al pasar el ratón por una estadística.
+const DORADO_HUD: Color = Color("#E8C15A")
+
+## Color de una pifia (un 1 natural).
+const ROJO_PIFIA: Color = Color("#DB5C5C")
+
+## Orden de los nueve botones de estadística del HUD.
+const ABREVIATURAS_ESTADISTICA: Array[String] = [
+	"FUE", "DES", "CON", "INT", "SAB", "CAR",
+	"CA", "PG", "VEL",
+]
+
+## Cuántas tiradas se enseñan en el historial.
+const MAX_HISTORIAL_TIRADAS: int = 8
+
+## Pone la textura en el sprite 3D, la recorta a su contenido visible
+## y la escala para que siempre mida ALTURA_SPRITE_3D desde los pies.
+func poner_textura_3d(textura: Texture2D) -> void:
+
+	if sprite_criatura == null:
+		return
+
+	sprite_criatura.texture = textura
+	sprite_criatura.region_enabled = false
+
+	if textura == null:
+		return
+
+	var rect := _rect_visible(textura)
+	var alto := rect.size.y
+
+	if alto <= 0.0:
+		return
+
+	sprite_criatura.region_enabled = true
+	sprite_criatura.region_rect = rect
+	sprite_criatura.pixel_size = ALTURA_SPRITE_3D / alto
+	sprite_criatura.position = Vector3(
+		0.0,
+		ALTURA_SPRITE_3D * 0.5,
+		0.0
+	)
+
+
+## Rectángulo de los píxeles con alpha de la textura.
+## Si la imagen no tiene transparencia, devuelve la textura entera.
+func _rect_visible(textura: Texture2D) -> Rect2:
+
+	var imagen := textura.get_image()
+
+	if imagen == null:
+		return Rect2(Vector2.ZERO, Vector2(textura.get_size()))
+
+	if imagen.is_compressed():
+		imagen.decompress()
+
+	var usado := imagen.get_used_rect()
+
+	if usado.size.x <= 0 or usado.size.y <= 0:
+		return Rect2(Vector2.ZERO, Vector2(textura.get_size()))
+
+	return Rect2(usado)
+
 ## Refresca la transformación mostrada según la última tirada del d100.
 func actualizar_criatura() -> void:
 
@@ -1319,10 +1497,10 @@ func actualizar_criatura() -> void:
 		Criatura.DIFICULTAD_MAXIMA,
 		criatura.nombre_dificultad(),
 	]
-	imagen_criatura.texture = criatura.imagen
 
-	rellenar_atributos(fase)
-	rellenar_combate(fase)
+	
+	poner_textura_3d(criatura.imagen)
+	rellenar_estadisticas(fase)
 	rellenar_puntos()
 	rellenar_habilidades(criatura)
 	rellenar_pericias(fase)
@@ -1334,117 +1512,150 @@ func mostrar_criatura_vacia(texto: String, subtitulo: String) -> void:
 	etiqueta_criatura.text = texto
 	subtitulo_criatura.text = subtitulo
 	etiqueta_fase.text = "Fase —"
-	imagen_criatura.texture = null
 
-	rellenar_atributos(null)
-	rellenar_combate(null)
+
+	poner_textura_3d(null)
+	rellenar_estadisticas(null)
 	rellenar_puntos()
 	rellenar_habilidades(null)
 	rellenar_pericias(null)
 
 
-## Rellena los seis atributos del grid. Con null, los deja en "—".
-func rellenar_atributos(fase: Fase) -> void:
+## Localiza los nueve botones del HUD y les da el dorado al pasar el ratón.
+func _preparar_estadisticas() -> void:
 
-	for atributo in ReglasDnD.ATRIBUTOS:
+	botones_estadistica.clear()
 
-		var etiqueta := grid_atributos.get_node_or_null(
-			"Valor_" + atributo
-		) as Label
-
-		if etiqueta == null:
-			continue
-
-		if fase == null:
-			etiqueta.text = "—"
-			continue
-
-		var valor := fase.valor_atributo(atributo)
-		var modificador := ReglasDnD.modificador(valor)
-
-		etiqueta.text = "%d (%s)" % [
-			valor,
-			ReglasDnD.texto_modificador(modificador),
-		]
-
-
-## Rellena CA y PG de la fase. Con null, los deja en "—".
-func rellenar_combate(fase: Fase) -> void:
-
-	if fase == null:
-		valor_ca.text = "—"
-		valor_pg.text = "—"
+	if capa_estadisticas == null:
 		return
 
-	valor_ca.text = str(fase.ca)
-	valor_pg.text = str(fase.pg)
+	for abreviatura in ABREVIATURAS_ESTADISTICA:
 
+		var boton := capa_estadisticas.get_node_or_null(
+			"Boton_" + abreviatura
+		) as Button
+
+		if boton == null:
+			continue
+
+		botones_estadistica[abreviatura] = boton
+
+		_estilizar_boton_hud(boton)
+
+
+## Estilo común de los botones flotantes del HUD.
+func _estilizar_boton_hud(boton: Button) -> void:
+
+	boton.add_theme_constant_override("icon_max_width", 24)
+	boton.add_theme_color_override("font_hover_color", DORADO_HUD)
+	boton.add_theme_color_override("font_pressed_color", DORADO_HUD)
+	boton.add_theme_color_override("icon_hover_color", DORADO_HUD)
+	boton.add_theme_color_override("icon_pressed_color", DORADO_HUD)
+	boton.add_theme_color_override("icon_focus_color", DORADO_HUD)
+
+	if not boton.has_meta("tirada_conectada"):
+		boton.set_meta("tirada_conectada", true)
+		boton.pressed.connect(_on_boton_tirada_pressed.bind(boton))
+		boton.gui_input.connect(_on_boton_tirada_gui_input.bind(boton))
+
+## Escribe los nueve valores de la fase en los botones del HUD.
+func rellenar_estadisticas(fase: Fase) -> void:
+
+	if fase == null:
+
+		for abreviatura in ABREVIATURAS_ESTADISTICA:
+			_poner_estadistica(abreviatura, "—", 0)
+
+		return
+
+	# Las tiradas de estadística son d20 limpio, sin modificador.
+	_poner_estadistica("FUE", str(fase.fuerza), 0)
+	_poner_estadistica("DES", str(fase.destreza), 0)
+	_poner_estadistica("CON", str(fase.constitucion), 0)
+	_poner_estadistica("INT", str(fase.inteligencia), 0)
+	_poner_estadistica("SAB", str(fase.sabiduria), 0)
+	_poner_estadistica("CAR", str(fase.carisma), 0)
+	_poner_estadistica("CA", str(fase.ca), 0)
+	_poner_estadistica("PG", str(fase.pg), 0)
+	_poner_estadistica("VEL", fase.velocidad, 0)
+
+
+## "FUE 14" mientras no haya icono; solo "14" cuando lo tenga.
+func _poner_estadistica(abreviatura: String, valor: String, bono: int) -> void:
+
+	var boton := botones_estadistica.get(abreviatura) as Button
+
+	if boton == null:
+		return
+
+	boton.set_meta("bono", bono)
+	boton.set_meta("etiqueta", abreviatura)
+
+	if boton.icon == null:
+		boton.text = "%s %s" % [abreviatura, valor]
+	else:
+		boton.text = valor
 
 ## Muestra los PM y los PT del Núcleo en sus barras.
-## El máximo de PT es provisional: son los iniciales, hasta que haya niveles.
 func rellenar_puntos() -> void:
 
 	barra_pm.max_value = EstadoNucleo.PM_MAXIMO
 	barra_pm.value = nucleo.pm
 
-	barra_pt.max_value = EstadoNucleo.PT_INICIALES
+	actualizar_barra_pt()
+
+
+## Refresca la barra de PT y su texto.
+func actualizar_barra_pt() -> void:
+
+	var pt_maximos := nucleo.pt_maximos()
+
+	barra_pt.max_value = pt_maximos
 	barra_pt.value = nucleo.pt
-	valor_pt.text = "%d / %d" % [nucleo.pt, EstadoNucleo.PT_INICIALES]
+	valor_pt.text = "%d / %d" % [nucleo.pt, pt_maximos]
 
 
-## Las 18 pericias, con el modificador y las competentes resaltadas.
+## Las 18 pericias, en los botones libres del HUD.
 func rellenar_pericias(fase: Fase) -> void:
 
-	for hijo in lista_pericias.get_children():
-		lista_pericias.remove_child(hijo)
-		hijo.queue_free()
+	var nombres := ReglasDnD.nombres_pericias()
 
-	for nombre in ReglasDnD.nombres_pericias():
+	for i in nombres.size():
 
-		var fila := HBoxContainer.new()
+		if i >= botones_pericia.size():
+			break
 
-		var etiqueta_nombre := Label.new()
-		etiqueta_nombre.text = nombre
-		etiqueta_nombre.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		etiqueta_nombre.add_theme_font_size_override("font_size", 15)
+		var boton := botones_pericia[i]
 
-		var etiqueta_valor := Label.new()
-		etiqueta_valor.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		etiqueta_valor.add_theme_font_size_override("font_size", 15)
+		if boton == null:
+			continue
+
+		var nombre := nombres[i]
 
 		if fase == null:
+			boton.text = nombre
+			boton.set_meta("bono", 0)
+			boton.set_meta("etiqueta", nombre)
+			continue
 
-			etiqueta_valor.text = "—"
-			etiqueta_nombre.add_theme_color_override(
-				"font_color",
-				Color(0.62, 0.62, 0.68, 1)
-			)
-			etiqueta_valor.add_theme_color_override(
-				"font_color",
-				Color(0.62, 0.62, 0.68, 1)
-			)
-		else:
+		var valor := fase.valor_pericia(
+			nombre,
+			ReglasDnD.BONO_COMPETENCIA_PROVISIONAL
+		)
 
-			var valor := fase.valor_pericia(
-				nombre,
-				ReglasDnD.BONO_COMPETENCIA_PROVISIONAL
-			)
+		var marca := ""
 
-			etiqueta_valor.text = ReglasDnD.texto_modificador(valor)
+		if fase.es_competente_pericia(nombre):
+			marca = "● "
 
-			if fase.es_competente_pericia(nombre):
-				etiqueta_nombre.add_theme_color_override(
-					"font_color",
-					Color(0.86, 0.72, 0.38, 1)
-				)
-				etiqueta_valor.add_theme_color_override(
-					"font_color",
-					Color(0.86, 0.72, 0.38, 1)
-				)
+		boton.text = "%s%s  %s" % [
+			marca,
+			nombre,
+			ReglasDnD.texto_modificador(valor),
+		]
 
-		fila.add_child(etiqueta_nombre)
-		fila.add_child(etiqueta_valor)
-		lista_pericias.add_child(fila)
+		boton.set_meta("bono", valor)
+		boton.set_meta("etiqueta", nombre)
 
 
 ## Sustituye la lista de habilidades por un botón por habilidad.
@@ -1698,7 +1909,16 @@ func _on_boton_tirar_d100_pressed() -> void:
 
 	if tirada_d100_en_curso:
 		return
+	if not nucleo.puede_tirar_d100():
+		mostrar_aviso("No tienes PT suficientes para tirar el d100.")
+		return
 
+	if not nucleo.gastar_pt(nucleo.coste_d100()):
+		actualizar_barra_pt()
+		actualizar_panel_d100()
+		return
+
+	actualizar_barra_pt()
 	tirada_d100_en_curso = true
 	boton_tirar_d100.disabled = true
 
@@ -1720,12 +1940,19 @@ func _on_boton_tirar_d100_pressed() -> void:
 			INTERVALO_ANIMACION_D100
 		).timeout
 
+	var criatura := buscar_criatura(resultado)
+
 	registrar_tirada_d100(resultado)
-	nucleo.transformar_en(buscar_criatura(resultado))
+	nucleo.transformar_en(criatura)
+
+	if criatura != null:
+		nucleo.registrar_criatura(resultado)
+
+	guardar_partida()
+	actualizar_barra_pt()
 	actualizar_panel_d100()
 	etiqueta_duplicada.visible = duplicada
 	tirada_d100_en_curso = false
-	boton_tirar_d100.disabled = false
 
 
 func _on_boton_base_datos_pressed() -> void:
@@ -1746,3 +1973,349 @@ func mostrar_aviso(texto: String) -> void:
 
 	dialogo_aviso.dialog_text = texto
 	dialogo_aviso.popup_centered()
+
+## Localiza los 18 botones de pericia del HUD.
+## No depende de tildes ni mayúsculas en el nombre del nodo.
+func _preparar_pericias_hud() -> void:
+
+	botones_pericia.clear()
+
+	if capa_pericias == null:
+		return
+
+	var botones_por_nombre: Dictionary = {}
+
+	for hijo in capa_pericias.get_children():
+
+		if hijo is Button:
+			botones_por_nombre[_sin_tildes(str(hijo.name))] = hijo
+
+	for nombre in ReglasDnD.nombres_pericias():
+
+		var clave := _sin_tildes("Boton_" + nombre.replace(" ", "_"))
+		var boton := botones_por_nombre.get(clave) as Button
+
+		botones_pericia.append(boton)
+
+		if boton == null:
+			push_warning(
+				"Pericia sin botón en el HUD: %s" % nombre
+			)
+			continue
+
+		_estilizar_boton_hud(boton)
+
+
+## Minúsculas y sin tildes, para comparar nombres de nodo.
+func _sin_tildes(texto: String) -> String:
+
+	var limpio := texto.to_lower()
+
+	var tildes := {
+		"á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u",
+		"ü": "u", "ñ": "n",
+	}
+
+	for letra in tildes:
+		limpio = limpio.replace(letra, tildes[letra])
+
+	return limpio
+
+# ==================================================
+# TIRADAS DE HABILIDAD
+# ==================================================
+
+## Menú que sale con el clic derecho sobre una estadística o pericia.
+func crear_menu_tirada() -> void:
+
+	menu_tirada = PopupMenu.new()
+	menu_tirada.add_item("Normal", Dados.Modo.NORMAL)
+	menu_tirada.add_item("Ventaja", Dados.Modo.VENTAJA)
+	menu_tirada.add_item("Desventaja", Dados.Modo.DESVENTAJA)
+	menu_tirada.id_pressed.connect(_on_menu_tirada_id_pressed)
+	add_child(menu_tirada)
+
+
+func _on_boton_tirada_pressed(boton: Button) -> void:
+
+	tirar_para_boton(boton, Dados.Modo.NORMAL)
+
+
+func _on_boton_tirada_gui_input(evento: InputEvent, boton: Button) -> void:
+
+	if not (evento is InputEventMouseButton):
+		return
+
+	if not evento.pressed:
+		return
+
+	if evento.button_index != MOUSE_BUTTON_RIGHT:
+		return
+
+	boton_tirada_pendiente = boton
+	menu_tirada.position = Vector2i(evento.global_position)
+	menu_tirada.popup()
+
+
+func _on_menu_tirada_id_pressed(id: int) -> void:
+
+	if boton_tirada_pendiente == null:
+		return
+
+	tirar_para_boton(boton_tirada_pendiente, id)
+	boton_tirada_pendiente = null
+
+
+## Tira d20 + el bono guardado en el botón y pinta la tarjeta.
+func tirar_para_boton(boton: Button, modo: int) -> void:
+
+	var bono := int(boton.get_meta("bono", 0))
+	var etiqueta := str(boton.get_meta("etiqueta", str(boton.name)))
+
+	var tirada := Tirada.crear(
+		etiqueta,
+		modo,
+		Dados.tirar_d20(modo),
+		bono
+	)
+
+	_mostrar_tarjeta_tirada(tirada)
+	_agregar_al_historial(tirada)
+
+
+## Color del resultado: dorado en crítico, rojo en pifia, blanco normal.
+func _color_resultado(tirada: Tirada) -> Color:
+
+	if tirada.critico:
+		return DORADO_HUD
+
+	if tirada.pifia:
+		return ROJO_PIFIA
+
+	return Color(0.94, 0.95, 0.98, 1)
+
+
+## Pinta la tarjeta central con los dados, el bono y el total.
+func _mostrar_tarjeta_tirada(tirada: Tirada) -> void:
+
+	if tarjeta_tirada == null:
+		return
+
+	etiqueta_tirada.text = tirada.etiqueta
+	modo_tirada.text = tirada.nombre_modo()
+
+	_preparar_dados_tarjeta(tirada)
+
+	total_tirada.text = str(tirada.total)
+	total_tirada.add_theme_color_override(
+		"font_color",
+		_color_resultado(tirada)
+	)
+
+	if tirada.critico:
+		estado_tirada.text = "¡Crítico natural!"
+	elif tirada.pifia:
+		estado_tirada.text = "¡Pifia!"
+	elif tirada.modo != Dados.Modo.NORMAL:
+		estado_tirada.text = "Cuenta el %d" % tirada.base
+	else:
+		estado_tirada.text = ""
+
+	estado_tirada.visible = not estado_tirada.text.is_empty()
+	estado_tirada.add_theme_color_override(
+		"font_color",
+		_color_resultado(tirada)
+	)
+
+	tarjeta_tirada.visible = true
+	tarjeta_tirada.modulate.a = 0.0
+	tarjeta_tirada.scale = Vector2(0.94, 0.94)
+	tarjeta_tirada.pivot_offset = tarjeta_tirada.size * 0.5
+
+	if tween_tarjeta != null and tween_tarjeta.is_valid():
+		tween_tarjeta.kill()
+
+	tween_tarjeta = create_tween()
+	tween_tarjeta.tween_property(
+		tarjeta_tirada,
+		"modulate:a",
+		1.0,
+		0.14
+	)
+	tween_tarjeta.parallel().tween_property(
+		tarjeta_tirada,
+		"scale",
+		Vector2.ONE,
+		0.22
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween_tarjeta.tween_interval(2.2)
+	tween_tarjeta.tween_property(
+		tarjeta_tirada,
+		"modulate:a",
+		0.0,
+		0.45
+	)
+	tween_tarjeta.tween_callback(_ocultar_tarjeta_tirada)
+
+
+## Vacía la fila y crea una ficha por dado. El descartado va atenuado.
+func _preparar_dados_tarjeta(tirada: Tirada) -> void:
+
+	if fila_dados == null:
+		return
+
+	for hijo in fila_dados.get_children():
+
+		fila_dados.remove_child(hijo)
+		hijo.queue_free()
+
+	var empatan := (
+		tirada.dados.size() > 1
+		and tirada.dados[0] == tirada.dados[1]
+	)
+
+	for i in tirada.dados.size():
+
+		var usado := i == tirada.indice_usado or empatan
+
+		fila_dados.add_child(
+			_crear_ficha_dado(tirada.dados[i], usado, tirada)
+		)
+
+	if tirada.bono != 0:
+
+		var etiqueta_bono := Label.new()
+		etiqueta_bono.text = ReglasDnD.texto_modificador(tirada.bono)
+		etiqueta_bono.add_theme_font_size_override("font_size", 26)
+		etiqueta_bono.add_theme_color_override(
+			"font_color",
+			Color(0.76, 0.78, 0.85, 1)
+		)
+		etiqueta_bono.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		fila_dados.add_child(etiqueta_bono)
+
+
+## Ficha cuadrada con el número de un dado.
+func _crear_ficha_dado(
+	valor: int,
+	usado: bool,
+	tirada: Tirada
+) -> PanelContainer:
+
+	var ficha := PanelContainer.new()
+	ficha.custom_minimum_size = Vector2(58, 54)
+
+	var color := _color_resultado(tirada)
+
+	var estilo := StyleBoxFlat.new()
+	estilo.bg_color = Color(0.1, 0.11, 0.16, 1)
+	estilo.corner_radius_top_left = 8
+	estilo.corner_radius_top_right = 8
+	estilo.corner_radius_bottom_right = 8
+	estilo.corner_radius_bottom_left = 8
+	estilo.border_width_left = 2
+	estilo.border_width_top = 2
+	estilo.border_width_right = 2
+	estilo.border_width_bottom = 2
+	estilo.border_color = color if usado else Color(0.3, 0.32, 0.4, 1)
+	ficha.add_theme_stylebox_override("panel", estilo)
+
+	var numero := Label.new()
+	numero.text = str(valor)
+	numero.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	numero.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	numero.add_theme_font_size_override("font_size", 30)
+	numero.add_theme_color_override(
+		"font_color",
+		color if usado else Color(0.52, 0.54, 0.62, 1)
+	)
+	ficha.add_child(numero)
+
+	if not usado:
+		ficha.modulate.a = 0.55
+
+	return ficha
+
+
+## Añade la tirada arriba del historial como una mini-tarjeta.
+func _agregar_al_historial(tirada: Tirada) -> void:
+
+	if lista_tiradas == null:
+		return
+
+	var fila := PanelContainer.new()
+	fila.mouse_filter = Control.MOUSE_FILTER_PASS
+
+	var estilo := StyleBoxFlat.new()
+	estilo.bg_color = Color(0.09, 0.1, 0.14, 0.95)
+	estilo.corner_radius_top_left = 6
+	estilo.corner_radius_top_right = 6
+	estilo.corner_radius_bottom_right = 6
+	estilo.corner_radius_bottom_left = 6
+	estilo.border_width_left = 3
+	estilo.border_color = _color_resultado(tirada)
+	fila.add_theme_stylebox_override("panel", estilo)
+
+	var margen := MarginContainer.new()
+	margen.add_theme_constant_override("margin_left", 8)
+	margen.add_theme_constant_override("margin_top", 4)
+	margen.add_theme_constant_override("margin_right", 8)
+	margen.add_theme_constant_override("margin_bottom", 4)
+
+	var linea := HBoxContainer.new()
+	linea.add_theme_constant_override("separation", 8)
+
+	var dados := Label.new()
+	dados.text = tirada.texto_dados()
+	dados.custom_minimum_size = Vector2(44, 0)
+	dados.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	dados.add_theme_font_size_override("font_size", 15)
+	dados.add_theme_color_override(
+		"font_color",
+		_color_resultado(tirada)
+	)
+
+	var nombre := Label.new()
+	nombre.text = tirada.etiqueta
+	nombre.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	nombre.clip_text = true
+	nombre.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	nombre.add_theme_font_size_override("font_size", 14)
+
+	var total := Label.new()
+	total.text = str(tirada.total)
+	total.add_theme_font_size_override("font_size", 18)
+	total.add_theme_color_override(
+		"font_color",
+		_color_resultado(tirada)
+	)
+
+	linea.add_child(dados)
+	linea.add_child(nombre)
+	linea.add_child(total)
+	margen.add_child(linea)
+	fila.add_child(margen)
+
+	if tirada.modo != Dados.Modo.NORMAL:
+
+		fila.tooltip_text = "%s · d20 %s%s" % [
+			tirada.nombre_modo(),
+			tirada.texto_dados(),
+			tirada.texto_bono(),
+		]
+
+	lista_tiradas.add_child(fila)
+	lista_tiradas.move_child(fila, 0)
+
+	while lista_tiradas.get_child_count() > MAX_HISTORIAL_TIRADAS:
+
+		var viejo := lista_tiradas.get_child(
+			lista_tiradas.get_child_count() - 1
+		)
+		lista_tiradas.remove_child(viejo)
+		viejo.queue_free()
+
+
+func _ocultar_tarjeta_tirada() -> void:
+
+	tarjeta_tirada.visible = false

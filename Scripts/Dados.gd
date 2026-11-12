@@ -17,7 +17,7 @@ const DADO_ESPECIAL: int = 100
 
 ## Hasta qué número vale una tirada del d100 de transformación.
 ## Temporal: la criatura 1 a 10 están en pruebas. En el futuro lo decidirán los Hitos.
-const UMBRAL_D100: int = 10
+const UMBRAL_D100: int = 1
 
 ## Máximo de tiradas que se recuerdan del dado especial.
 const MAX_HISTORIAL: int = 5
@@ -94,3 +94,38 @@ static func es_duplicada(
 static func texto_tirada(caras: int, resultado: int) -> String:
 
 	return "d" + str(caras) + " → " + str(resultado)
+
+## Caras del dado de habilidad.
+const DADO_HABILIDAD: int = 20
+
+## Formas de tirar un d20.
+enum Modo { NORMAL, VENTAJA, DESVENTAJA }
+
+
+## Tira el d20 y devuelve las tiradas realizadas: una, o dos con ventaja/desventaja.
+static func tirar_d20(modo: int = Modo.NORMAL) -> Array[int]:
+
+	var tiradas: Array[int] = [tirar(DADO_HABILIDAD)]
+
+	if modo != Modo.NORMAL:
+		tiradas.append(tirar(DADO_HABILIDAD))
+
+	return tiradas
+
+
+## De las tiradas de d20, devuelve la que cuenta según el modo.
+static func resultado_d20(tiradas: Array[int], modo: int) -> int:
+
+	if tiradas.is_empty():
+		return 0
+
+	if tiradas.size() < 2:
+		return tiradas[0]
+
+	if modo == Modo.VENTAJA:
+		return maxi(tiradas[0], tiradas[1])
+
+	if modo == Modo.DESVENTAJA:
+		return mini(tiradas[0], tiradas[1])
+
+	return tiradas[0]

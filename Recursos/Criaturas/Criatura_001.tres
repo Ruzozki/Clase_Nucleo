@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b1h86mwojlt6" path="res://Recursos/Recursos_Habilidad.gd" id="1_dseo0"]
 [ext_resource type="Script" uid="uid://mqaol8acbgro" path="res://Recursos/Recursos_Criatura.gd" id="1_lhqdx"]
 [ext_resource type="Script" uid="uid://bhrvt1cxultx6" path="res://Recursos/Recursos_Fase.gd" id="1_ljnrg"]
-[ext_resource type="Texture2D" uid="uid://dxwbtuw04vw5b" path="res://Asseds/Sprites/1794246980329.jpg" id="2_hiciq"]
+[ext_resource type="Texture2D" uid="uid://cghto3w3io3r2" path="res://Asseds/Sprites/Criatura_003.png" id="3_71o2o"]
 [ext_resource type="Script" uid="uid://c5pecqboyxyyr" path="res://Recursos/Recursos_Mutacion.gd" id="4_71o2o"]
 
 [sub_resource type="Resource" id="Resource_ljnrg"]
@@ -66,7 +66,7 @@ numero = 1
 nombre = "Latígias"
 tipo = "Planta"
 dificultad = 1
-imagen = ExtResource("2_hiciq")
+imagen = ExtResource("3_71o2o")
 habilidades = Array[ExtResource("1_dseo0")]([])
 fases = Array[ExtResource("1_ljnrg")]([SubResource("Resource_ljnrg")])
 mutaciones = Array[ExtResource("4_71o2o")]([SubResource("Resource_trj1j"), SubResource("Resource_ojjhw")])

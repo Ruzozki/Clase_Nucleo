@@ -26,7 +26,7 @@ const NOMBRES_ESTADO: Array[String] = [
 const PM_MAXIMO: int = 25
 
 ## Puntos de Transformación con los que empieza el Núcleo.
-const PT_INICIALES: int = 2
+const PT_INICIALES: int = 1
 
 ## Tramos de riesgo de mutación. Cada fila es [PM desde, % de mutar].
 ## Deben ir ordenadas de menor a mayor. Se editan al equilibrar.
@@ -47,6 +47,15 @@ var pt: int = PT_INICIALES
 
 ## Puntos de Mutación acumulados (0 – PM_MAXIMO).
 var pm: int = 0
+
+## Nivel actual del Núcleo.
+var nivel: int = 1
+
+## PT extra que suman los hitos.
+var bonos_pt: int = 0
+
+## Números de criatura ya registrados (1–100), sin repetir.
+var criaturas_registradas: Array[int] = []
 
 ## Criatura en la que está transformado. Null si es el Núcleo.
 var criatura_actual: Criatura = null
@@ -136,3 +145,60 @@ func empezar_mutacion(mutacion: Mutacion) -> void:
 	estado = Estado.SOBRECALENTAMIENTO
 	pm = 0
 	turnos_restantes = mutacion.duracion_turnos
+
+## PT máximos: nivel del Núcleo más lo que den los hitos.
+func pt_maximos() -> int:
+
+	return maxi(nivel + bonos_pt, 0)
+
+
+## Coste de la siguiente tirada del d100. La primera es gratis.
+func coste_d100() -> int:
+
+	if criaturas_registradas.is_empty():
+		return 0
+
+	return 1
+
+
+## True si hay PT para pagar la siguiente tirada.
+func puede_tirar_d100() -> bool:
+
+	return pt >= coste_d100()
+
+
+## Gasta PT si alcanza. Devuelve true si se pudo pagar.
+func gastar_pt(cantidad: int) -> bool:
+
+	if cantidad <= 0:
+		return true
+
+	if pt < cantidad:
+		return false
+
+	pt -= cantidad
+	return true
+
+
+## Guarda una criatura como registrada. Devuelve true si era nueva.
+func registrar_criatura(numero: int) -> bool:
+
+	if numero < 1 or numero > 100:
+		return false
+
+	if criaturas_registradas.has(numero):
+		return false
+
+	criaturas_registradas.append(numero)
+	criaturas_registradas.sort()
+	return true
+
+
+## Mantiene el estado dentro de sus límites.
+func normalizar() -> void:
+
+	nivel = clampi(nivel, 1, 20)
+	bonos_pt = maxi(bonos_pt, 0)
+	criaturas_registradas.sort()
+	pt = clampi(pt, 0, pt_maximos())
+	
